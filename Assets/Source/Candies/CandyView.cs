@@ -4,7 +4,10 @@ namespace Sourse.Candies
 {
     public class CandyView : MonoBehaviour
     {
-        public void Construct(Vector2 position)
-            => transform.position = position;
+        public void Construct(Candy candy, Transform parent)
+        {
+            transform.position = candy.Position;
+            transform.parent = parent;
+        }
     }
 }

@@ -8,5 +8,8 @@ namespace Sourse.Candies
             => Position = position;
 
         public Vector2 Position;
+
+        public void ChangePosition(Vector2 position)
+            => Position = position;
     }
 }
