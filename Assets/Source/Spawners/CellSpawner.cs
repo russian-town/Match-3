@@ -1,18 +1,25 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CellSpawner : MonoBehaviour
+namespace Sourse.GameboardContent.CellContent
 {
-    // Start is called before the first frame update
-    void Start()
+    public class CellSpawner
     {
-        
-    }
+        public List<Cell> Get(int width, int height)
+        {
+            List<Cell> tempCells = new ();
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+            for (int i = 0; i < width; i++) 
+            {
+                for (int j = 0; j < height; j++)
+                {
+                    Vector2 currentPosition = new Vector2(i, j);
+                    Cell cell = new Cell(currentPosition);
+                    tempCells.Add(cell);
+                }
+            }
+
+            return tempCells;
+        }
     }
 }

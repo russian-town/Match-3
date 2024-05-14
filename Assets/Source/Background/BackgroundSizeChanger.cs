@@ -1,14 +1,17 @@
 using UnityEngine;
 
-public class BackgroundSizeChanger
+namespace Sourse.Background
 {
-    private readonly float _scaleFactor = 2f;
-
-    public Vector2 GetSize(Camera camera)
+    public class BackgroundSizeChanger
     {
-        float height = camera.orthographicSize * _scaleFactor;
-        float width = height * Screen.width / Screen.height;
+        private readonly float _scaleFactor = 2f;
 
-        return new Vector2(width, height);
+        public Vector2 GetSize(Camera camera)
+        {
+            float height = camera.orthographicSize * _scaleFactor;
+            float width = height * Screen.width / Screen.height;
+
+            return new Vector2(width, height);
+        }
     }
 }

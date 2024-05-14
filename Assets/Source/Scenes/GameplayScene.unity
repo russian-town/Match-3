@@ -153,7 +153,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _backgroundViewTemplate: {fileID: -169596733819304294, guid: 6bfeca911256d484cb023d660eea0910, type: 3}
+  _gameboardViewTemplate: {fileID: 7464739884195807530, guid: 7ae5600a04618f34987a25c7b3fcfd02, type: 3}
+  _cellViewTemplate: {fileID: 3324603080707332495, guid: d376d0d436880554dbfcf2dc8aafe037, type: 3}
   _camera: {fileID: 519420031}
+  _gameboardConfig: {fileID: 11400000, guid: bfe3e6249c47c9e4d908207fe29c9aea, type: 2}
 --- !u!4 &220314216
 Transform:
   m_ObjectHideFlags: 0

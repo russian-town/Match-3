@@ -1,9 +1,12 @@
 using UnityEngine;
 
-public class BackgroundView : MonoBehaviour
+namespace Sourse.Background
 {
-    public void Construct(Vector2 size)
+    public class BackgroundView : MonoBehaviour
     {
-        transform.localScale = size;
+        public void Construct(Vector2 size)
+        {
+            transform.localScale = size;
+        }
     }
 }

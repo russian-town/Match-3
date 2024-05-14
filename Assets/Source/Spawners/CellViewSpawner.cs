@@ -1,18 +1,12 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class CellViewSpawner : MonoBehaviour
+namespace Sourse.GameboardContent.CellContent
 {
-    // Start is called before the first frame update
-    void Start()
+    public class CellViewSpawner
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        public CellView Get(CellView cellViewTemplate)
+        {
+            return Object.Instantiate(cellViewTemplate);
+        }
     }
 }
