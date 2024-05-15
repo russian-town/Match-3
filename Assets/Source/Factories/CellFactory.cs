@@ -1,9 +1,10 @@
 using System.Collections.Generic;
+using Sourse.GameboardContent.CellContent;
 using UnityEngine;
 
-namespace Sourse.GameboardContent.CellContent
+namespace Sourse.Factories
 {
-    public class CellSpawner
+    public class CellFactory
     {
         public List<Cell> Get(int width, int height)
         {
@@ -13,8 +14,8 @@ namespace Sourse.GameboardContent.CellContent
             {
                 for (int j = 0; j < height; j++)
                 {
-                    Vector2 currentPosition = new Vector2(i, j);
-                    Cell cell = new Cell(currentPosition);
+                    Vector2 currentPosition = new (i, j);
+                    Cell cell = new (currentPosition);
                     tempCells.Add(cell);
                 }
             }

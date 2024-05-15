@@ -9,7 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6996dd4037e6a464d884ca2c22349e1b, type: 3}
-  m_Name: Candy Config
+  m_Script: {fileID: 11500000, guid: f73845585cc46b5459f6f39e556d0bea, type: 3}
+  m_Name: Level Config
   m_EditorClassIdentifier: 
-  <Texture>k__BackingField: {fileID: 452399569, guid: 8162e0a56d2a9b741bd1f41099cd9149, type: 3}
+  CandyMoveSpeed: 3

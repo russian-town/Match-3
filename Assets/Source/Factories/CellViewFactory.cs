@@ -1,8 +1,9 @@
+using Sourse.GameboardContent.CellContent;
 using UnityEngine;
 
-namespace Sourse.GameboardContent.CellContent
+namespace Sourse.Factories
 {
-    public class CellViewSpawner
+    public class CellViewFactory
     {
         public CellView Get(CellView cellViewTemplate)
         {

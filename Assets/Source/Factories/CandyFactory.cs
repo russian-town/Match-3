@@ -1,9 +1,9 @@
 using Sourse.Candies;
 using UnityEngine;
 
-namespace Sourse.Spawners
+namespace Sourse.Factories
 {
-    public class CandySpawner
+    public class CandyFactory
     {
         public Candy Get(Vector2 position)
         {

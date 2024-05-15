@@ -1,9 +1,9 @@
 using Sourse.Background;
 using UnityEngine;
 
-namespace Sourse.Spawners
+namespace Sourse.Factories
 {
-    public class BackgroundViewSpawners
+    public class BackgroundViewFactory
     {
         public BackgroundView Get(BackgroundView backgroundViewTemplate)
         {

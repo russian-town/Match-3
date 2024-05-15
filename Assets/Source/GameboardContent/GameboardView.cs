@@ -1,10 +1,22 @@
+using Sourse.Presenter;
 using UnityEngine;
 
 namespace Sourse.GameboardContent
 {
     public class GameboardView : MonoBehaviour
     {
-        public void Construct(Vector2 position)
-            => transform.position = position;
+        private IPresenter _presenter;
+
+        public void Construct(Vector2 position, IPresenter presenter)
+        {
+            //transform.position = position;
+            _presenter = presenter;
+        }
+
+        public void Enable()
+            => _presenter.Enable();
+
+        public void Disable()
+            => _presenter.Disable();
     }
 }

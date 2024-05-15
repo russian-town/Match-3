@@ -1,9 +1,9 @@
 using Sourse.Candies;
 using UnityEngine;
 
-namespace Sourse.Spawners
+namespace Sourse.Factories
 {
-    public class CandyViewSpawner
+    public class CandyViewFactory
     {
         public CandyView Get(CandyView candyViewTemplate)
         {

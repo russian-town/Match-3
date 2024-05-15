@@ -3,9 +3,9 @@ using Sourse.Configs;
 using Sourse.GameboardContent;
 using Sourse.GameboardContent.CellContent;
 
-namespace Sourse.Spawners
+namespace Sourse.Factories
 {
-    public class GameboardSpawner
+    public class GameboardFactory
     {
         public Gameboard Get(List<Cell> cells, GameboardConfig config)
         {

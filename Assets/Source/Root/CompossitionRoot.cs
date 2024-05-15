@@ -6,23 +6,25 @@ using Sourse.GameboardContent;
 using Sourse.GameboardContent.CellContent;
 using Sourse.HUD.Input;
 using Sourse.Presenter;
-using Sourse.Spawners;
+using Sourse.Factories;
 using UnityEngine;
+using Sourse.Services;
 
 namespace Sourse.Root
 {
     public class CompossitionRoot : MonoBehaviour
     {
         private readonly BackgroundSizeChanger _backgroundSizeChanger = new ();
-        private readonly BackgroundViewSpawners _backgroundViewSpawners = new ();
-        private readonly CellSpawner _cellSpawner = new();
-        private readonly CellViewSpawner _cellViewSpawners = new ();
+        private readonly BackgroundViewFactory _backgroundViewFactory = new ();
+        private readonly CellFactory _cellFactory = new();
+        private readonly CellViewFactory _cellViewFactory = new ();
         private readonly CellPresenter _cellPresenter = new ();
-        private readonly GameboardSpawner _gameboardSpawner = new();
-        private readonly GameboardViewSpawner _gameboardViewSpawner = new ();
-        private readonly CandySpawner _candySpawner = new();
-        private readonly CandyViewSpawner _candyViewSpawner = new ();
-        private readonly TouchpadSpawner _touchpadSpawner = new();
+        private readonly GameboardFactory _gameboardFactory = new();
+        private readonly GameboardViewFactory _gameboardViewFactory = new ();
+        private readonly CandyFactory _candyFactory = new();
+        private readonly CandyViewFactory _candyViewFactory = new ();
+        private readonly PresenterFactory _presenterFactory = new ();
+        private readonly TouchpadFactory _touchpadFactory = new();    
         private readonly float _divider = 2f;
         private readonly float _cellHalfSize = .5f;
 
@@ -35,10 +37,30 @@ namespace Sourse.Root
         [SerializeField] private RectTransform _hud;
         [SerializeField] private Touchpad _touchpadTemplate;
         [SerializeField] private List<CandyConfig> _candyConfigs = new ();
+        [SerializeField] private LevelConfig _levelConfig;
 
         private List<Cell> _cells = new ();
+        private List<CellView> _cellViews = new ();
+        private Touchpad _touchpad;
         private Gameboard _gameboard;
         private GameboardView _gameboardView;
+        private List<CandyPresenter> _candyPresenters = new ();
+        private GameLoopService _gameLoopService;
+
+        public void OnDisable()
+        {
+            foreach (var cellView in _cellViews)
+            {
+                cellView.Disable();
+            }
+
+            _gameboardView.Disable();
+        }
+
+        private void OnDestroy()
+        {
+            _gameLoopService.Unsubscribe();
+        }
 
         public void Start()
             => Initialize();
@@ -46,11 +68,11 @@ namespace Sourse.Root
         private void Initialize()
         {
             Vector2 backgroundSize = _backgroundSizeChanger.GetSize(_camera);
-            BackgroundView backgroundView = _backgroundViewSpawners.Get(_backgroundViewTemplate);
+            BackgroundView backgroundView = _backgroundViewFactory.Get(_backgroundViewTemplate);
             backgroundView.Construct(backgroundSize);
-            _cells = _cellSpawner.Get(_gameboardConfig.Width, _gameboardConfig.Height);
-            _gameboard = _gameboardSpawner.Get(_cells, _gameboardConfig);
-            _gameboardView = _gameboardViewSpawner.Get(_gameboardViewTemplate);
+            _cells = _cellFactory.Get(_gameboardConfig.Width, _gameboardConfig.Height);
+            _gameboard = _gameboardFactory.Get(_cells, _gameboardConfig);
+            _gameboardView = _gameboardViewFactory.Get(_gameboardViewTemplate);
 
             foreach (var cell in _cells)
             {
@@ -62,24 +84,31 @@ namespace Sourse.Root
              new(
                  -_gameboardConfig.Width / _divider + _cellHalfSize,
                  -_gameboardConfig.Height / _divider + _cellHalfSize);
-            _gameboardView.Construct(gameboardViewPosition);
-            Touchpad touchpad = _touchpadSpawner.Get(_touchpadTemplate, _hud);
-            touchpad.Construct(_camera);
+            _touchpad = _touchpadFactory.Get(_touchpadTemplate, _hud);
+            _touchpad.Construct(_camera);
+            GameboardPresenter gameboardPresenter = new(_gameboard, _gameboardView, _touchpad);
+            _gameboardView.Construct(gameboardViewPosition, gameboardPresenter);
+            _gameboardView.Enable();
+            _gameLoopService = new(gameboardPresenter, _candyPresenters);
+            _gameLoopService.Subscribe();
         }
 
         private void CreateCellView(Cell cell)
         {
-            CellView cellView = _cellViewSpawners.Get(_cellViewTemplate);
+            CellView cellView = _cellViewFactory.Get(_cellViewTemplate);
             cellView.Constuct(_cellPresenter, cell.WorldPosition, _gameboardView.transform);
+            _cellViews.Add(cellView);
         }
 
         private void CreateCandies(Cell cell)
         {
             int index = Random.Range(0, _candyConfigs.Count);
-            Candy candy = _candySpawner.Get(cell.WorldPosition);
-            CandyView candyView = _candyViewSpawner.Get(_candyViewTemplate);
+            Candy candy = _candyFactory.Get(cell.WorldPosition);
+            CandyView candyView = _candyViewFactory.Get(_candyViewTemplate);
             candyView.Construct(cell.WorldPosition, _gameboardView.transform, _candyConfigs[index]);
             cell.SetCandy(candy);
+            CandyPresenter candyPresenter = new (candy, candyView, _levelConfig.CandyMoveSpeed);
+            _candyPresenters.Add(candyPresenter);
         }
     }
 }
