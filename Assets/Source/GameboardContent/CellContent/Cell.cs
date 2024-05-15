@@ -5,14 +5,16 @@ namespace Sourse.GameboardContent.CellContent
 {
     public class Cell
     {
-        public Cell(Vector2 postion)
+        public Cell(Vector2 worldPosition)
         {
-            Postion = postion;
-            //Candy = candy;
+            WorldPosition = worldPosition;
         }
 
-        public Vector2 Postion {  get; private set; }
-
         public Candy Candy { get; private set; }
+
+        public Vector2 WorldPosition {  get; private set; }
+
+        public void SetCandy(Candy candy)
+            => Candy = candy;
     }
 }

@@ -1,3 +1,4 @@
+using System;
 using Sourse.GameboardContent;
 using Sourse.GameboardContent.CellContent;
 using UnityEngine;
@@ -8,27 +9,27 @@ namespace Sourse.HUD.Input
     public class Touchpad : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     {
         private Camera _camera;
-        private Gameboard _gameboard;
         private Vector2 _firstTouchPosition;
         private Vector2 _finalTouchPosition;
         private float _swipeAngle;
 
-        public void Construct(Camera camera, Gameboard gameboard)
-        {
-            _camera = camera;
-            _gameboard = gameboard;
-        }
+        public event Action<Vector2> TouchStarted;
+
+        public event Action<Vector2> TouchEnded;
+
+        public void Construct(Camera camera)
+            => _camera = camera;
 
         public void OnPointerDown(PointerEventData eventData)
         {
             _firstTouchPosition = _camera.ScreenToWorldPoint(eventData.position);
-            Cell cell = _gameboard.GetTouchCell(_firstTouchPosition);
+            TouchStarted?.Invoke(_firstTouchPosition);
         }
 
         public void OnPointerUp(PointerEventData eventData)
         {
             _finalTouchPosition = _camera.ScreenToWorldPoint(eventData.position);
-            Cell cell = _gameboard.GetTargetCell(_finalTouchPosition);
+            TouchEnded?.Invoke(_finalTouchPosition);
             CalculateAngle();
         }
 

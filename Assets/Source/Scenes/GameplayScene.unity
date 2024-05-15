@@ -228,6 +228,13 @@ MonoBehaviour:
   _candyViewTemplate: {fileID: 6138186010137412469, guid: c1baf236ee0b6a84e8a610b2573c6ce1, type: 3}
   _hud: {fileID: 894364879}
   _touchpadTemplate: {fileID: 3629362416982549329, guid: a7a11df3af8e5f046a52039d2841a172, type: 3}
+  _candyConfigs:
+  - {fileID: 11400000, guid: 70d122b5d1889b24c80df52fd337e1b0, type: 2}
+  - {fileID: 11400000, guid: 1245fa9ddb6aa7a419de38dbe1295ef0, type: 2}
+  - {fileID: 11400000, guid: 28f96fd1b18d3d94dbd5340408fa5d4c, type: 2}
+  - {fileID: 11400000, guid: 6d259f2626083aa44aa3ea8bf608f1c5, type: 2}
+  - {fileID: 11400000, guid: 03e59dfabdb43c04c828b317d0dd22fc, type: 2}
+  - {fileID: 11400000, guid: 2dfdccbd82cdf7d4eaaee392d967bdd0, type: 2}
 --- !u!4 &220314216
 Transform:
   m_ObjectHideFlags: 0

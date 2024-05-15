@@ -4,10 +4,14 @@ namespace Sourse.Candies
 {
     public class CandyView : MonoBehaviour
     {
-        public void Construct(Candy candy, Transform parent)
+        private SpriteRenderer _spriteRenderer;
+
+        public void Construct(Vector2 position, Transform parent, CandyConfig candyConfig)
         {
-            transform.position = candy.Position;
+            _spriteRenderer = GetComponent<SpriteRenderer>();
+            transform.position = position;
             transform.parent = parent;
+            _spriteRenderer.sprite = candyConfig.Texture;
         }
     }
 }

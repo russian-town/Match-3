@@ -5,6 +5,7 @@ using Sourse.Configs;
 using Sourse.GameboardContent;
 using Sourse.GameboardContent.CellContent;
 using Sourse.HUD.Input;
+using Sourse.Presenter;
 using Sourse.Spawners;
 using UnityEngine;
 
@@ -16,6 +17,7 @@ namespace Sourse.Root
         private readonly BackgroundViewSpawners _backgroundViewSpawners = new ();
         private readonly CellSpawner _cellSpawner = new();
         private readonly CellViewSpawner _cellViewSpawners = new ();
+        private readonly CellPresenter _cellPresenter = new ();
         private readonly GameboardSpawner _gameboardSpawner = new();
         private readonly GameboardViewSpawner _gameboardViewSpawner = new ();
         private readonly CandySpawner _candySpawner = new();
@@ -32,6 +34,7 @@ namespace Sourse.Root
         [SerializeField] private CandyView _candyViewTemplate;
         [SerializeField] private RectTransform _hud;
         [SerializeField] private Touchpad _touchpadTemplate;
+        [SerializeField] private List<CandyConfig> _candyConfigs = new ();
 
         private List<Cell> _cells = new ();
         private Gameboard _gameboard;
@@ -61,20 +64,22 @@ namespace Sourse.Root
                  -_gameboardConfig.Height / _divider + _cellHalfSize);
             _gameboardView.Construct(gameboardViewPosition);
             Touchpad touchpad = _touchpadSpawner.Get(_touchpadTemplate, _hud);
-            touchpad.Construct(_camera, _gameboard);
+            touchpad.Construct(_camera);
         }
 
         private void CreateCellView(Cell cell)
         {
             CellView cellView = _cellViewSpawners.Get(_cellViewTemplate);
-            cellView.Constuct(cell, _gameboardView.transform);
+            cellView.Constuct(_cellPresenter, cell.WorldPosition, _gameboardView.transform);
         }
 
         private void CreateCandies(Cell cell)
         {
-            Candy candy = _candySpawner.Get(cell.Postion);
+            int index = Random.Range(0, _candyConfigs.Count);
+            Candy candy = _candySpawner.Get(cell.WorldPosition);
             CandyView candyView = _candyViewSpawner.Get(_candyViewTemplate);
-            candyView.Construct(candy, _gameboardView.transform);
+            candyView.Construct(cell.WorldPosition, _gameboardView.transform, _candyConfigs[index]);
+            cell.SetCandy(candy);
         }
     }
 }
