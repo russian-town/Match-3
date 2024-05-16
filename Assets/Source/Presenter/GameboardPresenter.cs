@@ -8,11 +8,13 @@ namespace Sourse.Presenter
 {
     public class GameboardPresenter : IPresenter
     {
-        private Gameboard _gameboard;
-        private GameboardView _view;
-        private Touchpad _touchpad;
+        private readonly Gameboard _gameboard;
+        private readonly GameboardView _view;
+        private readonly Touchpad _touchpad;
 
-        private Candy _startCandy;
+        private int _startCandyIndex;
+        private int _targetCandyIndex;
+        private Candy _touchCandy;
         private Candy _targetCandy;
 
         public GameboardPresenter(
@@ -25,7 +27,7 @@ namespace Sourse.Presenter
             _touchpad = touchpad;
         }
 
-        public event Action<Candy, Candy> CandiesSwaped;
+        public event Action<int, Candy, int, Candy> CandiesSwaped;
 
         public void Enable()
         {
@@ -40,12 +42,16 @@ namespace Sourse.Presenter
         }
 
         private void OnTouchStarted(Vector2 worldPosition)
-            => _startCandy = _gameboard.GetTouchCell(worldPosition).Candy;
+        {
+            _startCandyIndex = _gameboard.GetTouchCellIndex(worldPosition);
+            _touchCandy = _gameboard.GetCandy(_startCandyIndex);
+        }
 
         private void OnTouchEnded(Vector2 worldPosition)
         {
-            _targetCandy = _gameboard.GetTargetCell(worldPosition).Candy;
-            CandiesSwaped?.Invoke(_startCandy, _targetCandy);
+            _targetCandyIndex = _gameboard.GetTargetCellIndex(worldPosition);
+            _targetCandy = _gameboard.GetCandy(_targetCandyIndex);
+            CandiesSwaped?.Invoke(_startCandyIndex, _touchCandy, _targetCandyIndex, _targetCandy);
         }
     }
 }

@@ -9,7 +9,7 @@ namespace Sourse.GameboardContent
 
         public void Construct(Vector2 position, IPresenter presenter)
         {
-            //transform.position = position;
+            transform.position = position;
             _presenter = presenter;
         }
 

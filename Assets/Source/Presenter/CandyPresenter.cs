@@ -32,7 +32,7 @@ namespace Sourse.Presenter
         public void Swape(Vector2 targetPosition)
         {
             _candy.ChangePosition(targetPosition);
-            _candyView.SetPosition(_candy.Position);
+            _candyView.ChangePosition(targetPosition);
         }
 
         public void Move(Vector2 targetPosition, MonoBehaviour context)

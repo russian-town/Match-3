@@ -46,6 +46,7 @@ namespace Sourse.Root
         private GameboardView _gameboardView;
         private List<CandyPresenter> _candyPresenters = new ();
         private GameLoopService _gameLoopService;
+        private List<CandyView> _candyViews = new ();
 
         public void OnDisable()
         {
@@ -70,9 +71,8 @@ namespace Sourse.Root
             Vector2 backgroundSize = _backgroundSizeChanger.GetSize(_camera);
             BackgroundView backgroundView = _backgroundViewFactory.Get(_backgroundViewTemplate);
             backgroundView.Construct(backgroundSize);
-            _cells = _cellFactory.Get(_gameboardConfig.Width, _gameboardConfig.Height);
-            _gameboard = _gameboardFactory.Get(_cells, _gameboardConfig);
             _gameboardView = _gameboardViewFactory.Get(_gameboardViewTemplate);
+            _cells = _cellFactory.Get(_gameboardConfig.Width, _gameboardConfig.Height);
 
             foreach (var cell in _cells)
             {
@@ -80,6 +80,7 @@ namespace Sourse.Root
                 CreateCandies(cell);
             }
 
+            _gameboard = _gameboardFactory.Get(_cells, _gameboardConfig);
             Vector2 gameboardViewPosition =
              new(
                  -_gameboardConfig.Width / _divider + _cellHalfSize,
@@ -89,7 +90,7 @@ namespace Sourse.Root
             GameboardPresenter gameboardPresenter = new(_gameboard, _gameboardView, _touchpad);
             _gameboardView.Construct(gameboardViewPosition, gameboardPresenter);
             _gameboardView.Enable();
-            _gameLoopService = new(gameboardPresenter, _candyPresenters);
+            _gameLoopService = new(gameboardPresenter, _candyPresenters, _candyViews);
             _gameLoopService.Subscribe();
         }
 
@@ -109,6 +110,7 @@ namespace Sourse.Root
             cell.SetCandy(candy);
             CandyPresenter candyPresenter = new (candy, candyView, _levelConfig.CandyMoveSpeed);
             _candyPresenters.Add(candyPresenter);
+            _candyViews.Add(candyView);
         }
     }
 }

@@ -11,11 +11,11 @@ namespace Sourse.Candies
         {
             _spriteRenderer = GetComponent<SpriteRenderer>();
             transform.position = position;
-            //transform.parent = parent;
+            transform.parent = parent;
             _spriteRenderer.sprite = candyConfig.Texture;
         }
 
-        public void SetPosition(Vector2 position)
+        public void ChangePosition(Vector2 position)
             => transform.position = position;
     }
 }
