@@ -13,3 +13,4 @@ MonoBehaviour:
   m_Name: Candy Config 1
   m_EditorClassIdentifier: 
   <Texture>k__BackingField: {fileID: -34178605, guid: 8162e0a56d2a9b741bd1f41099cd9149, type: 3}
+  <Type>k__BackingField: 1
