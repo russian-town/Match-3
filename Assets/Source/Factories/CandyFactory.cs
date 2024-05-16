@@ -5,9 +5,9 @@ namespace Sourse.Factories
 {
     public class CandyFactory
     {
-        public Candy Get(Vector2 position, int index)
+        public Candy Get(Vector2 position, int index, CandyType candyType)
         {
-            return new Candy(position, index);
+            return new Candy(position, index, candyType);
         }
     }
 }

@@ -4,11 +4,12 @@ using Sourse.Candies;
 using Sourse.Configs;
 using Sourse.GameboardContent;
 using Sourse.GameboardContent.CellContent;
+using Sourse.Factories;
 using Sourse.HUD.Input;
 using Sourse.Presenter;
-using Sourse.Factories;
-using UnityEngine;
 using Sourse.Services;
+using UnityEngine;
+using Sourse.Finder;
 
 namespace Sourse.Root
 {
@@ -26,6 +27,10 @@ namespace Sourse.Root
         private readonly TouchpadFactory _touchpadFactory = new();    
         private readonly float _divider = 2f;
         private readonly float _cellHalfSize = .5f;
+        private readonly List<CellView> _cellViews = new ();
+        private readonly List<CandyPresenter> _candyPresenters = new ();
+        private readonly List<CellPresenter> _cellPresenters = new ();
+        private readonly List<CandyView> _candyViews = new ();
 
         [SerializeField] private BackgroundView _backgroundViewTemplate;
         [SerializeField] private GameboardView _gameboardViewTemplate;
@@ -39,29 +44,22 @@ namespace Sourse.Root
         [SerializeField] private LevelConfig _levelConfig;
 
         private List<Cell> _cells = new ();
-        private List<CellView> _cellViews = new ();
         private Touchpad _touchpad;
         private Gameboard _gameboard;
         private GameboardView _gameboardView;
-        private List<CandyPresenter> _candyPresenters = new ();
-        private List<CellPresenter> _cellPresenters = new ();
         private GameLoopService _gameLoopService;
-        private List<CandyView> _candyViews = new ();
+        private MatchFinder _matchFinder;
 
         public void OnDisable()
         {
             foreach (var cellView in _cellViews)
-            {
                 cellView.Disable();
-            }
 
             _gameboardView.Disable();
         }
 
         private void OnDestroy()
-        {
-            _gameLoopService.Unsubscribe();
-        }
+            => _gameLoopService.Unsubscribe();
 
         public void Start()
             => Initialize();
@@ -83,13 +81,14 @@ namespace Sourse.Root
             _gameboard = _gameboardFactory.Get(_cells, _gameboardConfig);
             float xPosition = -_gameboardConfig.Width / _divider + _cellHalfSize;
             float yPosition = -_gameboardConfig.Height / _divider + _cellHalfSize;
-            Vector2 gameboardViewPosition = new Vector2(xPosition, yPosition);
+            Vector2 gameboardViewPosition = new (xPosition, yPosition);
             _touchpad = _touchpadFactory.Get(_touchpadTemplate, _hud);
             _touchpad.Construct(_camera);
-            GameboardPresenter gameboardPresenter = new(_gameboard, _gameboardView, _touchpad);
+            GameboardPresenter gameboardPresenter = new (_gameboard, _gameboardView, _touchpad);
             _gameboardView.Construct(gameboardViewPosition, gameboardPresenter);
             _gameboardView.Enable();
-            _gameLoopService = new(gameboardPresenter, _candyPresenters, _candyViews, _cellPresenters);
+            _matchFinder = new (_cells, _gameboardConfig);
+            _gameLoopService = new (gameboardPresenter, _candyPresenters, _cellPresenters, _matchFinder);
             _gameLoopService.Subscribe();
         }
 
@@ -97,7 +96,7 @@ namespace Sourse.Root
         {
             CellView cellView = _cellViewFactory.Get(_cellViewTemplate);
             _cellViews.Add(cellView);
-            CellPresenter cellPresenter = new CellPresenter(cell, cellView);
+            CellPresenter cellPresenter = new (cell, cellView);
             cellView.Constuct(cellPresenter, cell.WorldPosition, _gameboardView.transform);
             _cellPresenters.Add(cellPresenter);
         }
@@ -105,14 +104,19 @@ namespace Sourse.Root
         private void CreateCandies(Cell cell, int cellIndex)
         {
             int randomConfigIndex = Random.Range(0, _candyConfigs.Count);
-            Candy candy = _candyFactory.Get(cell.WorldPosition, cellIndex);
+            Candy candy = _candyFactory.Get(
+                cell.WorldPosition,
+                cellIndex,
+                _candyConfigs[randomConfigIndex].Type);
             CandyView candyView = _candyViewFactory.Get(_candyViewTemplate);
+            CandyPresenter candyPresenter =
+                new (candy, candyView, _levelConfig.CandyMoveSpeed, this);
             candyView.Construct(
                 cell.WorldPosition,
                 _gameboardView.transform,
-                _candyConfigs[randomConfigIndex]);
+                _candyConfigs[randomConfigIndex],
+                candyPresenter);
             cell.SetCandy(candy);
-            CandyPresenter candyPresenter = new (candy, candyView, _levelConfig.CandyMoveSpeed);
             _candyPresenters.Add(candyPresenter);
             _candyViews.Add(candyView);
         }

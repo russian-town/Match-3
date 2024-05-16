@@ -1,5 +1,7 @@
 using System.Collections.Generic;
 using Sourse.Candies;
+using Sourse.Finder;
+using Sourse.GameboardContent.CellContent;
 using Sourse.Presenter;
 using UnityEngine;
 
@@ -10,18 +12,18 @@ namespace Sourse.Services
         private readonly GameboardPresenter _gameboardPresenter;
         private readonly List<CandyPresenter> _candyPresenters;
         private readonly List<CellPresenter> _cellPresenters;
-        private readonly List<CandyView> _candyView;
+        private readonly MatchFinder _matchFinder;
 
         public GameLoopService(
             GameboardPresenter gameboardPresenter,
             List<CandyPresenter> candyPresenters,
-            List<CandyView> candyViews,
-            List<CellPresenter> cellPresenters)
+            List<CellPresenter> cellPresenters,
+            MatchFinder matchFinder)
         {
             _gameboardPresenter = gameboardPresenter;
             _candyPresenters = candyPresenters;
             _cellPresenters = cellPresenters;
-            _candyView = candyViews;
+            _matchFinder = matchFinder;
         }
 
         public void Subscribe()
@@ -75,6 +77,20 @@ namespace Sourse.Services
                 {
                     cellPresenter.ChangeCandy(touchCandy);
                     break;
+                }
+            }
+
+            if(_matchFinder.HasMatch(out List<Candy> matches))
+            {
+                for (int i = 0; i < _candyPresenters.Count; i++) 
+                {
+                    for (int j = 0; j < matches.Count; j++)
+                    {
+                        if (_candyPresenters[i].Index == matches[j].Index)
+                        {
+                            _candyPresenters[i].RemoveCandy();
+                        }
+                    }
                 }
             }
         }

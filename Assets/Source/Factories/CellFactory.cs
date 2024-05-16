@@ -19,7 +19,6 @@ namespace Sourse.Factories
                     Cell cell = new (currentPosition, index);
                     tempCells.Add(cell);
                     index++;
-                    Debug.Log(index);
                 }
             }
 

@@ -9,15 +9,20 @@ namespace Sourse.Presenter
         private readonly Candy _candy;
         private readonly CandyView _candyView;
         private readonly float _speed;
+        private readonly MonoBehaviour _context;
 
         private Coroutine _move;
 
-        public CandyPresenter(Candy candy, CandyView candyView, float speed)
+        public CandyPresenter(Candy candy,
+            CandyView candyView,
+            float speed,
+            MonoBehaviour context)
         {
             _candy = candy;
             _candyView = candyView;
             _speed = speed;
             Index = candy.Index;
+            _context = context;
         }
 
         public int Index { get; private set; }
@@ -30,6 +35,10 @@ namespace Sourse.Presenter
 
         public void Disable()
         {
+            if (_move != null)
+                _context.StopCoroutine(_move);
+
+            _move = null;
         }
 
         public void Swape(Vector2 targetPosition)
@@ -38,12 +47,18 @@ namespace Sourse.Presenter
             _candyView.ChangePosition(targetPosition);
         }
 
+        public void RemoveCandy()
+        {
+            _candy.Destroy();
+            _candyView.Disable();
+        }
+
         public void Move(Vector2 targetPosition, MonoBehaviour context)
         {
             if (_move != null)
                 return;
 
-            _move = context.StartCoroutine(StartMove(targetPosition));
+            _move = _context.StartCoroutine(StartMove(targetPosition));
         }
 
         private IEnumerator StartMove(Vector2 targetPosition)

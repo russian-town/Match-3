@@ -1,3 +1,4 @@
+using Sourse.Candies;
 using UnityEngine;
 
 namespace Sourse.Configs
@@ -6,5 +7,7 @@ namespace Sourse.Configs
     public class CandyConfig : ScriptableObject
     {
         [field: SerializeField] public Sprite Texture { get; private set; }
+
+        [field: SerializeField] public CandyType Type { get; private set;}
     }
 }
