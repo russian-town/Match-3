@@ -9,15 +9,18 @@ namespace Sourse.Services
     {
         private readonly GameboardPresenter _gameboardPresenter;
         private readonly List<CandyPresenter> _candyPresenters;
+        private readonly List<CellPresenter> _cellPresenters;
         private readonly List<CandyView> _candyView;
 
         public GameLoopService(
             GameboardPresenter gameboardPresenter,
             List<CandyPresenter> candyPresenters,
-            List<CandyView> candyViews)
+            List<CandyView> candyViews,
+            List<CellPresenter> cellPresenters)
         {
             _gameboardPresenter = gameboardPresenter;
             _candyPresenters = candyPresenters;
+            _cellPresenters = cellPresenters;
             _candyView = candyViews;
         }
 
@@ -26,17 +29,54 @@ namespace Sourse.Services
             _gameboardPresenter.CandiesSwaped += OnCandyMoved;
         }
 
-        public void Unsubscribe() 
+        public void Unsubscribe()
         {
             _gameboardPresenter.CandiesSwaped -= OnCandyMoved;
         }
 
-        private void OnCandyMoved(int touchCandyIndex, Candy touchCandy, int targetCandyIndex, Candy targetCandy)
+        private void OnCandyMoved(Candy touchCandy, int touchCellIndex, Candy targetCandy, int targetCellIndex)
         {
+            if (touchCandy == null || targetCandy == null)
+                return;
+
             Vector2 touchPosition = touchCandy.Position;
             Vector2 targetPosition = targetCandy.Position;
-            _candyPresenters[touchCandyIndex].Swape(targetPosition);
-            _candyPresenters[targetCandyIndex].Swape(touchPosition);
+
+            foreach (var candyPresenter in _candyPresenters)
+            {
+                if (candyPresenter.Index == touchCandy.Index)
+                {
+                    candyPresenter.Swape(targetPosition);
+                    break;
+                }
+            }
+
+            foreach (var candyPresenter in _candyPresenters)
+            {
+                if(candyPresenter.Index == targetCandy.Index)
+                {
+                    candyPresenter.Swape(touchPosition);
+                    break;
+                }
+            }
+
+            foreach (var cellPresenter in _cellPresenters)
+            {
+                if(cellPresenter.Index == touchCellIndex)
+                {
+                    cellPresenter.ChangeCandy(targetCandy);
+                    break;
+                }
+            }
+
+            foreach (var cellPresenter in _cellPresenters)
+            {
+                if(cellPresenter.Index == targetCellIndex)
+                {
+                    cellPresenter.ChangeCandy(touchCandy);
+                    break;
+                }
+            }
         }
     }
 }

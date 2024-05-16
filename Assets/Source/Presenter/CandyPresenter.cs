@@ -17,7 +17,10 @@ namespace Sourse.Presenter
             _candy = candy;
             _candyView = candyView;
             _speed = speed;
+            Index = candy.Index;
         }
+
+        public int Index { get; private set; }
 
         public Vector2 CandyPosition => _candy.Position;
 

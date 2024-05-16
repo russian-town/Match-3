@@ -10,12 +10,12 @@ namespace Sourse.Candies
         public void Construct(Vector2 position, Transform parent, CandyConfig candyConfig)
         {
             _spriteRenderer = GetComponent<SpriteRenderer>();
-            transform.position = position;
             transform.parent = parent;
+            transform.localPosition = position;
             _spriteRenderer.sprite = candyConfig.Texture;
         }
 
         public void ChangePosition(Vector2 position)
-            => transform.position = position;
+            => transform.localPosition = position;
     }
 }

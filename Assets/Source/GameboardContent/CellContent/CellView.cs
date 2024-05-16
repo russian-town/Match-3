@@ -16,8 +16,8 @@ namespace Sourse.GameboardContent.CellContent
         public void Constuct(IPresenter presenter, Vector2 position, Transform parent)
         {
             _presenter = presenter;
-            transform.position = position;
             transform.parent = parent;
+            transform.localPosition = position;
             Enable();
         }
     }

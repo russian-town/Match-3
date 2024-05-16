@@ -18,22 +18,17 @@ namespace Sourse.GameboardContent
             _config = config;
         }
 
-        public int GetTouchCellIndex(Vector2 position) 
+        public Candy GetCandy(Vector2 position, out int cellIndex)
         {
-            return GetCellIndex(position);
+            cellIndex = GetTouchIndex(position);
+
+            if (cellIndex < 0 || cellIndex > _cells.Count)
+                return null;
+
+            return _cells[cellIndex].Candy;
         }
 
-        public int GetTargetCellIndex(Vector2 position) 
-        {
-            return GetCellIndex(position);
-        }
-
-        public Candy GetCandy(int index)
-        {
-            return _cells[index].Candy;
-        }
-
-        private int GetCellIndex(Vector2 position)
+        private int GetTouchIndex(Vector2 position)
         {
             int x = (int)(position.y + _config.Width / _divider);
             int y = (int)(position.x + _config.Height / _divider);
