@@ -87,7 +87,7 @@ namespace Sourse.Root
             GameboardPresenter gameboardPresenter = new (_gameboard, _gameboardView, _touchpad);
             _gameboardView.Construct(gameboardViewPosition, gameboardPresenter);
             _gameboardView.Enable();
-            _matchFinder = new (_cells, _gameboardConfig, _gameboard);
+            _matchFinder = new (_cells, _gameboardConfig);
             _gameLoopService = new (gameboardPresenter, _candyPresenters, _cellPresenters, _matchFinder);
             _gameLoopService.Subscribe();
         }

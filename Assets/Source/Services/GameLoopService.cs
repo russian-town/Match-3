@@ -14,6 +14,8 @@ namespace Sourse.Services
         private readonly List<CellPresenter> _cellPresenters;
         private readonly MatchFinder _matchFinder;
 
+        private List<Candy> _matches = new ();
+
         public GameLoopService(
             GameboardPresenter gameboardPresenter,
             List<CandyPresenter> candyPresenters,
@@ -80,13 +82,13 @@ namespace Sourse.Services
                 }
             }
 
-            if(_matchFinder.HasMatch(out List<Candy> matches))
+            if(_matchFinder.HasMatch(ref _matches))
             {
-                for (int i = 0; i < _candyPresenters.Count; i++) 
+                for (int i = 0; i < _candyPresenters.Count; i++)
                 {
-                    for (int j = 0; j < matches.Count; j++)
+                    for (int j = 0; j < _matches.Count; j++)
                     {
-                        if (_candyPresenters[i].Index == matches[j].Index)
+                        if (_candyPresenters[i].Index == _matches[j].Index)
                         {
                             _candyPresenters[i].RemoveCandy();
                         }
