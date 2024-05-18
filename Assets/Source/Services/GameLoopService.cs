@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using Sourse.Candies;
 using Sourse.Finder;
-using Sourse.GameboardContent.CellContent;
 using Sourse.Presenter;
 using UnityEngine;
 
@@ -45,14 +44,14 @@ namespace Sourse.Services
 
             Vector2 touchPosition = touchCandy.Position;
             Vector2 targetPosition = targetCandy.Position;
-            var candyPresenter = _candyPresenters.Find(x => x.Index == touchCandy.Index);
-            candyPresenter.Swap(targetPosition);
-            candyPresenter = _candyPresenters.Find(x => x.Index == targetCandy.Index);
-            candyPresenter.Swap(touchPosition);
-            var cellPresenter = _cellPresenters.Find(x => x.Index == touchCellIndex);
-            cellPresenter.ChangeCandy(targetCandy);
-            cellPresenter = _cellPresenters.Find(x => x.Index == targetCellIndex);
-            cellPresenter.ChangeCandy(touchCandy);
+            var touchCandyPresenter = _candyPresenters.Find(x => x.Index == touchCandy.Index);
+            var targetCandyPresenter = _candyPresenters.Find(x => x.Index == targetCandy.Index);
+            var touchCellPresenter = _cellPresenters.Find(x => x.Index == touchCellIndex);
+            var targetCellPresenter = _cellPresenters.Find(x => x.Index == targetCellIndex);
+            touchCandyPresenter.Swap(targetPosition);
+            targetCandyPresenter.Swap(touchPosition);
+            touchCellPresenter.ChangeCandy(targetCandy);
+            targetCellPresenter.ChangeCandy(touchCandy);
 
             if(_matchFinder.HasMatch(ref _matches))
             {
@@ -66,6 +65,13 @@ namespace Sourse.Services
                         }
                     }
                 }
+            }
+            else
+            {
+                touchCandyPresenter.Swap(touchPosition);
+                targetCandyPresenter.Swap(targetPosition);
+                touchCellPresenter.ChangeCandy(touchCandy);
+                targetCellPresenter.ChangeCandy(targetCandy);
             }
         }
     }

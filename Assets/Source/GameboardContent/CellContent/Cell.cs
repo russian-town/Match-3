@@ -20,6 +20,8 @@ namespace Sourse.GameboardContent.CellContent
         public CandyType CandyType => Candy.Type;
 
         public void SetCandy(Candy candy)
-           => Candy = candy;
+        {
+            Candy = candy;
+        }
     }
 }

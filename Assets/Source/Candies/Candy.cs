@@ -17,14 +17,16 @@ namespace Sourse.Candies
 
         public CandyType Type { get; private set; }
 
+        public bool IsRemove { get; private set; }
+
         public void ChangePosition(Vector2 position)
         {
             Position = position;
         }
 
-        public void Destroy()
+        public void Remove()
         {
-
+            IsRemove = true;
         }
     }
 }

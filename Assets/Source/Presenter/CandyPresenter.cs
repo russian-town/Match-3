@@ -49,7 +49,7 @@ namespace Sourse.Presenter
 
         public void RemoveCandy()
         {
-            _candy.Destroy();
+            _candy.Remove();
             _candyView.Disable();
         }
 

@@ -32,8 +32,20 @@ namespace Sourse.GameboardContent
         {
             Vector2 direction = targetPosition - touchPosition;
             int index = GetTouchIndex(touchPosition + direction.normalized);
+
+            if (index <= 0 || index > _cells.Count)
+            {
+                targetIndex = 0;
+                return null;
+            }
+
             targetIndex = index;
             return _cells[index].Candy;
+        }
+
+        public void Update()
+        {
+
         }
 
         private int GetTouchIndex(Vector2 position)

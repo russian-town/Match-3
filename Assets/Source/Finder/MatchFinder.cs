@@ -1,11 +1,8 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using Sourse.Candies;
 using Sourse.Configs;
 using Sourse.Constants;
 using Sourse.GameboardContent.CellContent;
-using UnityEngine;
 
 namespace Sourse.Finder
 {
@@ -89,10 +86,31 @@ namespace Sourse.Finder
         {
             temp.Add(_cells[index].Candy);
 
-            if (temp.Count >= GameParameter.MinCandyCountToMatch)
-                _match.AddRange(temp);
+            if (IsValid(ref temp) == false)
+                return;
 
+            for (int i = temp.Count - 1; i >= 0; i--)
+            {
+                if (temp[i].IsRemove)
+                    temp.RemoveAt(i);
+            }
+
+            if(IsValid(ref temp) == false)
+                return;
+
+            _match.AddRange(temp);
             temp.Clear();
+        }
+
+        private bool IsValid(ref List<Candy> temp)
+        {
+            if (temp == null || temp.Count < GameParameter.MinCandyCountToMatch)
+            {
+                temp.Clear();
+                return false;
+            }
+
+            return true;
         }
     }
 }

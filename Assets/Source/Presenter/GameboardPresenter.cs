@@ -42,6 +42,11 @@ namespace Sourse.Presenter
             _touchpad.TouchEnded -= OnTouchEnded;
         }
 
+        public void UpdateBoard()
+        {
+            _gameboard.Update();
+        }
+
         private void OnTouchStarted(Vector2 worldPosition)
         {
             _touchPosition = worldPosition;
