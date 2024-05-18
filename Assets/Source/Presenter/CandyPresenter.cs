@@ -42,10 +42,7 @@ namespace Sourse.Presenter
         }
 
         public void Swap(Vector2 targetPosition)
-        {
-            _candy.ChangePosition(targetPosition);
-            _candyView.ChangePosition(targetPosition);
-        }
+            => Move(targetPosition);
 
         public void RemoveCandy()
         {
@@ -53,22 +50,23 @@ namespace Sourse.Presenter
             _candyView.Disable();
         }
 
-        public void Move(Vector2 targetPosition, MonoBehaviour context)
-        {
-            if (_move != null)
-                return;
-
-            _move = _context.StartCoroutine(StartMove(targetPosition));
-        }
+        private void Move(Vector2 targetPosition)
+            => _move = _context.StartCoroutine(StartMove(targetPosition));
 
         private IEnumerator StartMove(Vector2 targetPosition)
         {
-            Vector2 currentPosition = Vector2.zero;
+            if (_move != null)
+                yield return _move;
 
-            while (Vector2.Distance(_candy.Position, targetPosition) > 0)
+            _move = null;
+
+            Vector2 currentPosition;
+
+            while (Mathf.Approximately(Vector2.Distance(_candy.Position, targetPosition), 0) == false)
             {
-                currentPosition = Vector2.Lerp(currentPosition, targetPosition, _speed);
+                currentPosition = Vector2.MoveTowards(_candy.Position, targetPosition, _speed * Time.deltaTime);
                 _candy.ChangePosition(currentPosition);
+                _candyView.ChangePosition(currentPosition);
                 yield return null;
             }
 

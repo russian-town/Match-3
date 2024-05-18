@@ -72,6 +72,7 @@ namespace Sourse.Services
                 targetCandyPresenter.Swap(targetPosition);
                 touchCellPresenter.ChangeCandy(touchCandy);
                 targetCellPresenter.ChangeCandy(targetCandy);
+                Debug.Log("poop");
             }
         }
     }
