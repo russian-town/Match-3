@@ -45,42 +45,14 @@ namespace Sourse.Services
 
             Vector2 touchPosition = touchCandy.Position;
             Vector2 targetPosition = targetCandy.Position;
-
-            foreach (var candyPresenter in _candyPresenters)
-            {
-                if (candyPresenter.Index == touchCandy.Index)
-                {
-                    candyPresenter.Swape(targetPosition);
-                    break;
-                }
-            }
-
-            foreach (var candyPresenter in _candyPresenters)
-            {
-                if(candyPresenter.Index == targetCandy.Index)
-                {
-                    candyPresenter.Swape(touchPosition);
-                    break;
-                }
-            }
-
-            foreach (var cellPresenter in _cellPresenters)
-            {
-                if(cellPresenter.Index == touchCellIndex)
-                {
-                    cellPresenter.ChangeCandy(targetCandy);
-                    break;
-                }
-            }
-
-            foreach (var cellPresenter in _cellPresenters)
-            {
-                if(cellPresenter.Index == targetCellIndex)
-                {
-                    cellPresenter.ChangeCandy(touchCandy);
-                    break;
-                }
-            }
+            var candyPresenter = _candyPresenters.Find(x => x.Index == touchCandy.Index);
+            candyPresenter.Swap(targetPosition);
+            candyPresenter = _candyPresenters.Find(x => x.Index == targetCandy.Index);
+            candyPresenter.Swap(touchPosition);
+            var cellPresenter = _cellPresenters.Find(x => x.Index == touchCellIndex);
+            cellPresenter.ChangeCandy(targetCandy);
+            cellPresenter = _cellPresenters.Find(x => x.Index == targetCellIndex);
+            cellPresenter.ChangeCandy(touchCandy);
 
             if(_matchFinder.HasMatch(ref _matches))
             {

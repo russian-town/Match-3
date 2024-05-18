@@ -41,7 +41,7 @@ namespace Sourse.Presenter
             _move = null;
         }
 
-        public void Swape(Vector2 targetPosition)
+        public void Swap(Vector2 targetPosition)
         {
             _candy.ChangePosition(targetPosition);
             _candyView.ChangePosition(targetPosition);
