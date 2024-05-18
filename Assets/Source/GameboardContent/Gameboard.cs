@@ -28,6 +28,14 @@ namespace Sourse.GameboardContent
             return _cells[cellIndex].Candy;
         }
 
+        public Candy GetTargetCandy(Vector2 touchPosition, Vector2 targetPosition, out int targetIndex)
+        {
+            Vector2 direction = targetPosition - touchPosition;
+            int index = GetTouchIndex(touchPosition + direction.normalized);
+            targetIndex = index;
+            return _cells[index].Candy;
+        }
+
         private int GetTouchIndex(Vector2 position)
         {
             int x = (int)(position.y + _config.Width / _divider);

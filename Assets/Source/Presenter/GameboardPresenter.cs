@@ -16,6 +16,7 @@ namespace Sourse.Presenter
         private Candy _targetCandy;
         private int _touchCellIndex;
         private int _targetCellIndex;
+        private Vector2 _touchPosition;
 
         public GameboardPresenter(
             Gameboard gameboard,
@@ -43,12 +44,13 @@ namespace Sourse.Presenter
 
         private void OnTouchStarted(Vector2 worldPosition)
         {
-            _touchCandy = _gameboard.GetCandy(worldPosition, out _touchCellIndex);
+            _touchPosition = worldPosition;
+            _touchCandy = _gameboard.GetCandy(_touchPosition, out _touchCellIndex);
         }
 
         private void OnTouchEnded(Vector2 worldPosition)
         {
-            _targetCandy = _gameboard.GetCandy(worldPosition, out _targetCellIndex);
+            _targetCandy = _gameboard.GetTargetCandy(_touchPosition, worldPosition, out _targetCellIndex);
             CandiesSwaped?.Invoke(_touchCandy, _touchCellIndex, _targetCandy, _targetCellIndex);
         }
     }
