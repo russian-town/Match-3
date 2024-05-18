@@ -1,7 +1,9 @@
+using System;
+using System.Collections.Generic;
 using Sourse.Candies;
 using Sourse.GameboardContent;
+using Sourse.GameboardContent.CellContent;
 using Sourse.HUD.Input;
-using System;
 using UnityEngine;
 
 namespace Sourse.Presenter
@@ -42,9 +44,14 @@ namespace Sourse.Presenter
             _touchpad.TouchEnded -= OnTouchEnded;
         }
 
-        public void UpdateBoard()
+        public bool NeedUpdate(out List<Cell> cellsToUpdate)
         {
-            _gameboard.Update();
+            cellsToUpdate = _gameboard.GetCellsToUpdate();
+
+            if (cellsToUpdate == null)
+                return false;
+
+            return cellsToUpdate.Count > 0;
         }
 
         private void OnTouchStarted(Vector2 worldPosition)

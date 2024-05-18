@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Sourse.Candies;
 using Sourse.Finder;
+using Sourse.GameboardContent.CellContent;
 using Sourse.Presenter;
 using UnityEngine;
 
@@ -14,6 +15,10 @@ namespace Sourse.Services
         private readonly MatchFinder _matchFinder;
 
         private List<Candy> _matches = new ();
+        private CandyPresenter _touchCandyPresenter;
+        private CandyPresenter _targetCandyPresenter;
+        private CellPresenter _touchCellPresenter;
+        private CellPresenter _targetCellPresenter;
 
         public GameLoopService(
             GameboardPresenter gameboardPresenter,
@@ -42,16 +47,16 @@ namespace Sourse.Services
             if (touchCandy == null || targetCandy == null)
                 return;
 
+            if (touchCandy.IsRemove || targetCandy.IsRemove)
+                return;
+
             Vector2 touchPosition = touchCandy.Position;
             Vector2 targetPosition = targetCandy.Position;
-            var touchCandyPresenter = _candyPresenters.Find(x => x.Index == touchCandy.Index);
-            var targetCandyPresenter = _candyPresenters.Find(x => x.Index == targetCandy.Index);
-            var touchCellPresenter = _cellPresenters.Find(x => x.Index == touchCellIndex);
-            var targetCellPresenter = _cellPresenters.Find(x => x.Index == targetCellIndex);
-            touchCandyPresenter.Swap(targetPosition);
-            targetCandyPresenter.Swap(touchPosition);
-            touchCellPresenter.ChangeCandy(targetCandy);
-            targetCellPresenter.ChangeCandy(touchCandy);
+            _touchCandyPresenter = _candyPresenters.Find(x => x.Index == touchCandy.Index);
+            _targetCandyPresenter = _candyPresenters.Find(x => x.Index == targetCandy.Index);
+            _touchCellPresenter = _cellPresenters.Find(x => x.Index == touchCellIndex);
+            _targetCellPresenter = _cellPresenters.Find(x => x.Index == targetCellIndex);
+            SwapCandies(targetPosition, touchPosition, targetCandy, touchCandy);
 
             if(_matchFinder.HasMatch(ref _matches))
             {
@@ -68,12 +73,20 @@ namespace Sourse.Services
             }
             else
             {
-                touchCandyPresenter.Swap(touchPosition);
-                targetCandyPresenter.Swap(targetPosition);
-                touchCellPresenter.ChangeCandy(touchCandy);
-                targetCellPresenter.ChangeCandy(targetCandy);
-                Debug.Log("poop");
+                SwapCandies(touchPosition, targetPosition, touchCandy, targetCandy);
             }
+        }
+
+        private void SwapCandies
+            (Vector2 touchPosition,
+            Vector2 targetPosition,
+            Candy touchCandy,
+            Candy targetCandy)
+        {
+            _touchCandyPresenter.Swap(touchPosition);
+            _targetCandyPresenter.Swap(targetPosition);
+            _touchCellPresenter.ChangeCandy(touchCandy);
+            _targetCellPresenter.ChangeCandy(targetCandy);
         }
     }
 }

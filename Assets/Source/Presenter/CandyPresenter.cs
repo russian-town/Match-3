@@ -27,8 +27,6 @@ namespace Sourse.Presenter
 
         public int Index { get; private set; }
 
-        public Vector2 CandyPosition => _candy.Position;
-
         public void Enable()
         {
         }

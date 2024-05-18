@@ -1,6 +1,4 @@
 using System;
-using Sourse.GameboardContent;
-using Sourse.GameboardContent.CellContent;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -11,7 +9,6 @@ namespace Sourse.HUD.Input
         private Camera _camera;
         private Vector2 _firstTouchPosition;
         private Vector2 _finalTouchPosition;
-        private float _swipeAngle;
 
         public event Action<Vector2> TouchStarted;
 
@@ -30,12 +27,6 @@ namespace Sourse.HUD.Input
         {
             _finalTouchPosition = _camera.ScreenToWorldPoint(eventData.position);
             TouchEnded?.Invoke(_finalTouchPosition);
-            CalculateAngle();
-        }
-
-        private void CalculateAngle()
-        {
-            _swipeAngle = Mathf.Atan2(_finalTouchPosition.y - _firstTouchPosition.y, _finalTouchPosition.x);
         }
     }
 }
