@@ -19,7 +19,7 @@ namespace Sourse.GameboardContent.CellContent
 
         public CandyType CandyType => Candy.Type;
 
-        public bool IsEmpty { get; private set; }
+        public bool IsEmpty => Candy.IsRemove;
 
         public void SetCandy(Candy candy)
         {

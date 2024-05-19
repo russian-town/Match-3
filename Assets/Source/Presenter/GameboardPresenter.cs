@@ -44,14 +44,20 @@ namespace Sourse.Presenter
             _touchpad.TouchEnded -= OnTouchEnded;
         }
 
-        public bool NeedUpdate(out List<Cell> cellsToUpdate)
+        public bool NeedUpdate(out Stack<Cell> cellsToUpdate, out Stack<Candy> candiesToUpdate)
         {
-            cellsToUpdate = _gameboard.GetCellsToUpdate();
+            _gameboard.Update(out Stack<Cell> cells, out Stack<Candy> candies);
 
-            if (cellsToUpdate == null)
+            if (candies.Count == 0)
+            {
+                cellsToUpdate = null;
+                candiesToUpdate = null;
                 return false;
+            }
 
-            return cellsToUpdate.Count > 0;
+            cellsToUpdate = cells;
+            candiesToUpdate = candies; 
+            return true;
         }
 
         private void OnTouchStarted(Vector2 worldPosition)

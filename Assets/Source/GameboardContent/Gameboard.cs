@@ -11,7 +11,8 @@ namespace Sourse.GameboardContent
         private readonly float _divider = 2f;
         private readonly List<Cell> _cells = new ();
         private readonly GameboardConfig _config;
-        private readonly List<Cell> _cellsToUpdate = new();
+
+        private Queue<Cell> _emptyCells;
 
         public Gameboard(List<Cell> cells, GameboardConfig config)
         {
@@ -45,36 +46,27 @@ namespace Sourse.GameboardContent
             return _cells[index].Candy;
         }
 
-        public List<Cell> GetCellsToUpdate()
+        public void Update(out Stack<Cell> cells, out Stack<Candy> candies)
         {
-            Vector2 down = new (0f, -1f);
+            cells = new();
+            candies = new();
 
-            for (int i = _cells.Count - 1; i >= 0; i--)
+            for (int i = 0; i < _config.Height; i++)
             {
-                Vector2 direction = _cells[i].WorldPosition + down;
-                Cell downCell = GetCellByDirection(direction);
-
-                if (downCell == null)
-                    continue;
-
-                if (_cells[i].IsEmpty == false && downCell.IsEmpty)
+                if (_cells[i].IsEmpty)
                 {
-                    _cellsToUpdate.Add(_cells[i]);
-                    _cellsToUpdate.Add(downCell);
+                    cells.Push(_cells[i]);
+
+                    for (int j = i; j < _config.Height; j++)
+                    {
+                        if (_cells[j].IsEmpty == false)
+                        {
+                            candies.Push(_cells[j].Candy);
+                            break;
+                        }
+                    }
                 }
             }
-
-            return _cellsToUpdate;
-        }
-
-        private Cell GetCellByDirection(Vector2 direction)
-        {
-            int index = GetTouchIndex(direction);
-            
-            if(index < 0 || index > _cells.Count)
-                return null;
-
-            return _cells[index];
         }
 
         private int GetTouchIndex(Vector2 position)
@@ -99,8 +91,7 @@ namespace Sourse.GameboardContent
             else if (direction.y > direction.x && direction.y > 0)
                 return Vector2.up;
 
-            Debug.Log(direction);
-            return Vector2.zero;
+            return Vector2.up;
         }
     }
 }

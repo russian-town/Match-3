@@ -39,8 +39,8 @@ namespace Sourse.Presenter
             _move = null;
         }
 
-        public void Swap(Vector2 targetPosition)
-            => Move(targetPosition);
+        public Coroutine Swap(Vector2 targetPosition)
+            => _move = _context.StartCoroutine(StartMove(targetPosition));
 
         public void RemoveCandy()
         {
@@ -48,15 +48,10 @@ namespace Sourse.Presenter
             _candyView.Disable();
         }
 
-        private void Move(Vector2 targetPosition)
-            => _move = _context.StartCoroutine(StartMove(targetPosition));
-
         private IEnumerator StartMove(Vector2 targetPosition)
         {
             if (_move != null)
                 yield return _move;
-
-            _move = null;
 
             Vector2 currentPosition;
 

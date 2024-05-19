@@ -10,6 +10,7 @@ using Sourse.Presenter;
 using Sourse.Services;
 using UnityEngine;
 using Sourse.Finder;
+using System.Collections;
 
 namespace Sourse.Root
 {
@@ -88,7 +89,7 @@ namespace Sourse.Root
             _gameboardView.Construct(gameboardViewPosition, gameboardPresenter);
             _gameboardView.Enable();
             _matchFinder = new (_cells, _gameboardConfig);
-            _gameLoopService = new (gameboardPresenter, _candyPresenters, _cellPresenters, _matchFinder);
+            _gameLoopService = new (gameboardPresenter, _candyPresenters, _cellPresenters, _matchFinder, this);
             _gameLoopService.Subscribe();
         }
 
@@ -119,6 +120,16 @@ namespace Sourse.Root
             cell.SetCandy(candy);
             _candyPresenters.Add(candyPresenter);
             _candyViews.Add(candyView);
+            //StartCoroutine(Poop());
+        }
+
+        private IEnumerator Poop()
+        {
+            for (int i = _gameboardConfig.Height - 1; i >= 0; i--)
+            {
+                _cellViews[i].gameObject.SetActive(false);
+                yield return new WaitForSeconds(.5f);
+            }
         }
     }
 }
