@@ -2,15 +2,14 @@ using System.Collections.Generic;
 using Sourse.Background;
 using Sourse.Candies;
 using Sourse.Configs;
+using Sourse.Factories;
+using Sourse.Finder;
 using Sourse.GameboardContent;
 using Sourse.GameboardContent.CellContent;
-using Sourse.Factories;
 using Sourse.HUD.Input;
 using Sourse.Presenter;
 using Sourse.Services;
 using UnityEngine;
-using Sourse.Finder;
-using System.Collections;
 
 namespace Sourse.Root
 {
@@ -48,6 +47,8 @@ namespace Sourse.Root
         private Touchpad _touchpad;
         private Gameboard _gameboard;
         private GameboardView _gameboardView;
+        private CandyPresenterFinder _candyPresenterFinder;
+        private CellPresenterFinder _cellPresenterFinder;
         private GameLoopService _gameLoopService;
         private MatchFinder _matchFinder;
 
@@ -89,7 +90,9 @@ namespace Sourse.Root
             _gameboardView.Construct(gameboardViewPosition, gameboardPresenter);
             _gameboardView.Enable();
             _matchFinder = new (_cells, _gameboardConfig);
-            _gameLoopService = new (gameboardPresenter, _candyPresenters, _cellPresenters, _matchFinder, this);
+            _candyPresenterFinder = new (_candyPresenters);
+            _cellPresenterFinder = new (_cellPresenters);
+            _gameLoopService = new (gameboardPresenter, _candyPresenterFinder, _cellPresenterFinder, _matchFinder);
             _gameLoopService.Subscribe();
         }
 
@@ -100,6 +103,7 @@ namespace Sourse.Root
             CellPresenter cellPresenter = new (cell, cellView);
             cellView.Constuct(cellPresenter, cell.WorldPosition, _gameboardView.transform);
             _cellPresenters.Add(cellPresenter);
+            Debug.Log(cellPresenter.Index);
         }
 
         private void CreateCandies(Cell cell, int cellIndex)
