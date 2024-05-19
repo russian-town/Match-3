@@ -51,7 +51,7 @@ namespace Sourse.Root
         private GameLoopService _gameLoopService;
         private MatchFinder _matchFinder;
 
-        public void OnDisable()
+        private void OnDisable()
         {
             foreach (var cellView in _cellViews)
                 cellView.Disable();
@@ -62,7 +62,7 @@ namespace Sourse.Root
         private void OnDestroy()
             => _gameLoopService.Unsubscribe();
 
-        public void Start()
+        private void Start()
             => Initialize();
 
         private void Initialize()
@@ -120,16 +120,6 @@ namespace Sourse.Root
             cell.SetCandy(candy);
             _candyPresenters.Add(candyPresenter);
             _candyViews.Add(candyView);
-            //StartCoroutine(Poop());
-        }
-
-        private IEnumerator Poop()
-        {
-            for (int i = _gameboardConfig.Height - 1; i >= 0; i--)
-            {
-                _cellViews[i].gameObject.SetActive(false);
-                yield return new WaitForSeconds(.5f);
-            }
         }
     }
 }

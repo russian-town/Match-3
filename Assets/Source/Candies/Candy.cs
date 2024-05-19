@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace Sourse.Candies
@@ -10,6 +11,8 @@ namespace Sourse.Candies
             Index = index;
             Type = type;
         }
+
+        public event Action Destroyed;
 
         public Vector2 Position { get; private set; }
 
@@ -27,6 +30,7 @@ namespace Sourse.Candies
         public void Remove()
         {
             IsRemove = true;
+            Destroyed?.Invoke();
         }
     }
 }

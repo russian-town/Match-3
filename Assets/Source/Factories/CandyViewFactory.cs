@@ -9,5 +9,10 @@ namespace Sourse.Factories
         {
             return Object.Instantiate(candyViewTemplate);
         }
+
+        public void Destroy(CandyView candyView)
+        {
+            Object.Destroy(candyView);
+        }
     }
 }

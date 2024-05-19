@@ -3,6 +3,7 @@ using Sourse.Candies;
 using Sourse.Configs;
 using Sourse.Constants;
 using Sourse.GameboardContent.CellContent;
+using UnityEngine;
 
 namespace Sourse.Finder
 {
@@ -11,7 +12,7 @@ namespace Sourse.Finder
         private readonly List<Cell> _cells = new ();
         private readonly GameboardConfig _gameboardConfig;
 
-        private List<Candy> _match;
+        private List<Candy> _match = new ();
 
         public MatchFinder(List<Cell> cells, GameboardConfig gameboardConfig)
         {
@@ -21,14 +22,15 @@ namespace Sourse.Finder
 
         public bool HasMatch(ref List<Candy> match)
         {
-            List<Candy> temp = new();
-            _match = new ();
+            List<Candy> temp = new ();
             ScanRow(ref temp);
             ScanColum(ref temp);
 
             if (_match.Count > 0)
             {
-                match = _match;
+                match = new ();
+                match.AddRange(_match);
+                _match.Clear();
                 return true;
             }
 

@@ -1,4 +1,5 @@
 using Sourse.Configs;
+using Sourse.Factories;
 using Sourse.Presenter;
 using UnityEngine;
 
@@ -9,7 +10,8 @@ namespace Sourse.Candies
         private SpriteRenderer _spriteRenderer;
         private IPresenter _presenter;
 
-        public void Construct(Vector2 position,
+        public void Construct(
+            Vector2 position,
             Transform parent,
             CandyConfig candyConfig,
             IPresenter presenter)
@@ -24,7 +26,7 @@ namespace Sourse.Candies
         public void ChangePosition(Vector2 position)
             => transform.localPosition = position;
 
-        public void Disable()
+        public void Destroy()
         {
             _presenter.Disable();
             gameObject.SetActive(false);

@@ -14,11 +14,8 @@ namespace Sourse.Presenter
         private readonly GameboardView _view;
         private readonly Touchpad _touchpad;
 
-        private Candy _touchCandy;
-        private Candy _targetCandy;
-        private int _touchCellIndex;
-        private int _targetCellIndex;
-        private Vector2 _touchPosition;
+        private Cell _touchCell;
+        private Cell _targetCell;
 
         public GameboardPresenter(
             Gameboard gameboard,
@@ -30,7 +27,7 @@ namespace Sourse.Presenter
             _touchpad = touchpad;
         }
 
-        public event Action<Candy, int, Candy, int> CandiesSwaped;
+        public event Action<Cell, Cell> CandiesSwaped;
 
         public void Enable()
         {
@@ -62,14 +59,31 @@ namespace Sourse.Presenter
 
         private void OnTouchStarted(Vector2 worldPosition)
         {
-            _touchPosition = worldPosition;
-            _touchCandy = _gameboard.GetCandy(_touchPosition, out _touchCellIndex);
+            _touchCell = _gameboard.GetCell(worldPosition);
         }
 
         private void OnTouchEnded(Vector2 worldPosition)
         {
-            _targetCandy = _gameboard.GetTargetCandy(_touchPosition, worldPosition, out _targetCellIndex);
-            CandiesSwaped?.Invoke(_touchCandy, _touchCellIndex, _targetCandy, _targetCellIndex);
+            if (_touchCell == null)
+                return;
+
+            _targetCell = _gameboard.GetCell(worldPosition);
+
+            if (_targetCell == null || CellsIsValid() == false)
+                return;
+
+            CandiesSwaped?.Invoke(_touchCell, _targetCell);
+        }
+
+        private bool CellsIsValid()
+        {
+            if (_touchCell.WorldPosition.x - _targetCell.WorldPosition.x < -1f
+                || _touchCell.WorldPosition.x - _targetCell.WorldPosition.x > 1f
+                || _touchCell.WorldPosition.y - _targetCell.WorldPosition.y < -1f
+                || _touchCell.WorldPosition.y - _targetCell.WorldPosition.y > 1f)
+                return false;
+
+            return true;
         }
     }
 }

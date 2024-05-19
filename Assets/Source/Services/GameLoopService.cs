@@ -47,29 +47,31 @@ namespace Sourse.Services
             _gameboardPresenter.CandiesSwaped -= OnCandyMoved;
         }
 
-        private void OnCandyMoved(Candy touchCandy, int touchCellIndex, Candy targetCandy, int targetCellIndex)
+        private void OnCandyMoved(Cell touchCell, Cell targetCell)
         {
             if (_run != null)
                 return;
 
             _run =
-                _context.StartCoroutine(Run(touchCandy, touchCellIndex, targetCandy, targetCellIndex));
+                _context.StartCoroutine(Run(touchCell, targetCell));
         }
 
-        private IEnumerator Run(Candy touchCandy, int touchCellIndex, Candy targetCandy, int targetCellIndex)
+        private IEnumerator Run(Cell touchCell, Cell targetCell)
         {
-            if (touchCandy == null || targetCandy == null)
+            if (touchCell == null || targetCell == null)
                 yield break;
 
-            if (touchCandy.IsRemove || targetCandy.IsRemove)
+            if (touchCell.IsEmpty || targetCell.IsEmpty)
                 yield break;
 
-            Vector2 touchPosition = touchCandy.Position;
-            Vector2 targetPosition = targetCandy.Position;
+            Vector2 touchPosition = touchCell.WorldPosition;
+            Vector2 targetPosition = targetCell.WorldPosition;
+            Candy touchCandy = touchCell.Candy;
+            Candy targetCandy = targetCell.Candy;
             _touchCandyPresenter = _candyPresenters.Find(x => x.Index == touchCandy.Index);
             _targetCandyPresenter = _candyPresenters.Find(x => x.Index == targetCandy.Index);
-            _touchCellPresenter = _cellPresenters.Find(x => x.Index == touchCellIndex);
-            _targetCellPresenter = _cellPresenters.Find(x => x.Index == targetCellIndex);
+            _touchCellPresenter = _cellPresenters.Find(x => x.Index == touchCell.Index);
+            _targetCellPresenter = _cellPresenters.Find(x => x.Index == targetCell.Index);
             yield return _context.StartCoroutine(
                 SwapCandies(targetPosition, touchPosition, targetCandy, touchCandy));
 
@@ -108,7 +110,7 @@ namespace Sourse.Services
                 {
                     if (_candyPresenters[i].Index == _matches[j].Index)
                     {
-                        _candyPresenters[i].RemoveCandy();
+                        _candyPresenters[i].Remove();
                     }
                 }
 
