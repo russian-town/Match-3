@@ -43,7 +43,12 @@ namespace Sourse.Finder
             for (int i = 0; i < _gameboardConfig.Width; i++)
             {
                 for (int j = i; j < _cells.Count; j += _gameboardConfig.Width)
+                {
+                    if (_cells[j].IsEmpty)
+                        continue;
+
                     Scan(j, j + _gameboardConfig.Width, ref temp);
+                }
 
                 temp.Clear();
             }
@@ -58,6 +63,10 @@ namespace Sourse.Finder
                 for (int j = 0; j < _gameboardConfig.Height; j++)
                 {
                     index++;
+
+                    if (_cells[index].IsEmpty)
+                        continue;
+
                     Scan(index, index + 1, ref temp);
                 }
 
@@ -78,7 +87,7 @@ namespace Sourse.Finder
                 return;
             }
 
-            if (_cells[nextIndex].CandyType == _cells[index].CandyType)
+            if (!_cells[nextIndex].IsEmpty && _cells[nextIndex].CandyType == _cells[index].CandyType)
                 temp.Add(_cells[index].Candy);
             else
                 AddMatch(ref temp, index);
@@ -90,12 +99,6 @@ namespace Sourse.Finder
 
             if (IsValid(ref temp) == false)
                 return;
-
-            for (int i = temp.Count - 1; i >= 0; i--)
-            {
-                if (temp[i].IsRemove)
-                    temp.RemoveAt(i);
-            }
 
             if(IsValid(ref temp) == false)
                 return;

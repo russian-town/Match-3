@@ -3,6 +3,7 @@ using UnityEngine;
 
 namespace Sourse.Candies
 {
+    [SerializeField]
     public class Candy
     {
         public Candy(Vector2 position, int index, CandyType type)
@@ -12,15 +13,13 @@ namespace Sourse.Candies
             Type = type;
         }
 
-        public event Action Destroyed;
+        public event Action<Candy> Destroyed;
 
         public Vector2 Position { get; private set; }
 
         public int Index { get; private set; }
 
         public CandyType Type { get; private set; }
-
-        public bool IsRemove { get; private set; }
 
         public void ChangePosition(Vector2 position)
         {
@@ -29,8 +28,7 @@ namespace Sourse.Candies
 
         public void Remove()
         {
-            IsRemove = true;
-            Destroyed?.Invoke();
+            Destroyed?.Invoke(this);
         }
     }
 }

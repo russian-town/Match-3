@@ -68,7 +68,7 @@ namespace Sourse.Services
             if (_matchFinder.HasMatch(ref _matches))
             {
                 RemoveCandies();
-                //UpdateBoard();
+                UpdateBoard();
             }
             else
             {
@@ -99,21 +99,22 @@ namespace Sourse.Services
         private void UpdateBoard()
         {
             if (_gameboardPresenter.NeedUpdate(out Stack<Cell> cellsToUpdate,
-                out Stack<Candy> candiesToUpdate) == false)
+                out Queue<Candy> candiesToUpdate))
             {
-                if (_matchFinder.HasMatch(ref _matches))
-                    RemoveCandies();
-            }
-            else
-            {
-                for (int i = 0; i < candiesToUpdate.Count; i++)
-                {
-                    if (candiesToUpdate.TryPop(out Candy candy) == false
-                        || cellsToUpdate.TryPop(out Cell cell) == false)
-                        break;
+                Debug.Log("need update");
 
-                    _candyPresenterFinder.Find(candy.Index).Swap(cell.WorldPosition);
-                    _cellPresenterFinder.Find(cell.Index).ChangeCandy(candy);
+                while (cellsToUpdate.Count > 0 && candiesToUpdate.Count > 0)
+                {
+                    for (int i = 0; i < candiesToUpdate.Count; i++)
+                    {
+                        if (candiesToUpdate.TryDequeue(out Candy candy) == false
+                            || cellsToUpdate.TryPop(out Cell cell) == false)
+                            break;
+
+                        _candyPresenterFinder.Find(candy.Index).Swap(cell.WorldPosition);
+                        _cellPresenterFinder.Find(candy.Index).ChangeCandy(null);
+                        _cellPresenterFinder.Find(cell.Index).ChangeCandy(candy);
+                    }
                 }
             }
         }

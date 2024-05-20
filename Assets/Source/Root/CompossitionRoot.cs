@@ -103,7 +103,6 @@ namespace Sourse.Root
             CellPresenter cellPresenter = new (cell, cellView);
             cellView.Constuct(cellPresenter, cell.WorldPosition, _gameboardView.transform);
             _cellPresenters.Add(cellPresenter);
-            Debug.Log(cellPresenter.Index);
         }
 
         private void CreateCandies(Cell cell, int cellIndex)

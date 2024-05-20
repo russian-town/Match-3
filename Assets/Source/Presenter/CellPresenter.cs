@@ -1,5 +1,6 @@
 using Sourse.Candies;
 using Sourse.GameboardContent.CellContent;
+using UnityEngine;
 
 namespace Sourse.Presenter
 {
@@ -23,6 +24,14 @@ namespace Sourse.Presenter
 
         public void Disable()
         {
+        }
+
+        public bool CheckCandyIndex(int index)
+        {
+            if(index == _cell.Candy.Index)
+                return true;
+
+            return false;
         }
 
         public void ChangeCandy(Candy candy)

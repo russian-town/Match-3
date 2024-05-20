@@ -21,4 +21,15 @@ public class CellPresenterFinder
 
         return null;
     }
+
+    public CellPresenter FindByCurrentCandy(int index)
+    {
+        foreach (var presenter in _cellPresenters)
+        {
+            if (presenter.CheckCandyIndex(index))
+                return presenter;
+        }
+
+        return null;
+    }
 }

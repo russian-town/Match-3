@@ -18,24 +18,22 @@ namespace Sourse.GameboardContent
             _config = config;
         }
 
-        public void Update(out Stack<Cell> cells, out Stack<Candy> candies)
+        public void Update(out Stack<Cell> cells, out Queue<Candy> candies)
         {
             cells = new();
             candies = new();
 
-            for (int i = 0; i < _config.Height; i++)
+            for (int i = _config.Height - 1; i >= 0; i--)
             {
                 if (_cells[i].IsEmpty)
                 {
-                    cells.Push(_cells[i]);
+                    if (i + 1 == _config.Height)
+                        continue;
 
-                    for (int j = i; j < _config.Height; j++)
+                    if (_cells[i + 1].IsEmpty == false)
                     {
-                        if (_cells[j].IsEmpty == false)
-                        {
-                            candies.Push(_cells[j].Candy);
-                            break;
-                        }
+                        cells.Push(_cells[i]);
+                        candies.Enqueue(_cells[i + 1].Candy);
                     }
                 }
             }

@@ -41,9 +41,9 @@ namespace Sourse.Presenter
             _touchpad.TouchEnded -= OnTouchEnded;
         }
 
-        public bool NeedUpdate(out Stack<Cell> cellsToUpdate, out Stack<Candy> candiesToUpdate)
+        public bool NeedUpdate(out Stack<Cell> cellsToUpdate, out Queue<Candy> candiesToUpdate)
         {
-            _gameboard.Update(out Stack<Cell> cells, out Stack<Candy> candies);
+            _gameboard.Update(out Stack<Cell> cells, out Queue<Candy> candies);
 
             if (candies.Count == 0)
             {
@@ -71,6 +71,12 @@ namespace Sourse.Presenter
 
             if (_targetCell == null || CellsIsValid() == false)
                 return;
+
+            if(_targetCell.IsEmpty)
+            {
+                Debug.Log("Target cell is empty.");
+                return;
+            }
 
             CandiesSwaped?.Invoke(_touchCell, _targetCell);
         }
