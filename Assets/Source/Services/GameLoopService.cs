@@ -103,18 +103,15 @@ namespace Sourse.Services
             {
                 Debug.Log("need update");
 
-                while (cellsToUpdate.Count > 0 && candiesToUpdate.Count > 0)
+                while (candiesToUpdate.Count > 0)
                 {
-                    for (int i = 0; i < candiesToUpdate.Count; i++)
-                    {
-                        if (candiesToUpdate.TryDequeue(out Candy candy) == false
-                            || cellsToUpdate.TryPop(out Cell cell) == false)
-                            break;
+                    if (candiesToUpdate.TryDequeue(out Candy candy) == false
+                        || cellsToUpdate.TryPop(out Cell cell) == false)
+                        break;
 
-                        _candyPresenterFinder.Find(candy.Index).Swap(cell.WorldPosition);
-                        _cellPresenterFinder.Find(candy.Index).ChangeCandy(null);
-                        _cellPresenterFinder.Find(cell.Index).ChangeCandy(candy);
-                    }
+                    _candyPresenterFinder.Find(candy.Index).Swap(cell.WorldPosition);
+                    _cellPresenterFinder.Find(candy.Index).ChangeCandy(null);
+                    _cellPresenterFinder.Find(cell.Index).ChangeCandy(candy);
                 }
             }
         }

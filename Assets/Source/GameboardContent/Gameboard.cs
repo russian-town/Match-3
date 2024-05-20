@@ -30,10 +30,12 @@ namespace Sourse.GameboardContent
                     if (i + 1 == _config.Height)
                         continue;
 
-                    if (_cells[i + 1].IsEmpty == false)
+                    cells.Push(_cells[i]);
+
+                    for (int j = 0; j < _config.Height - i; j++)
                     {
-                        cells.Push(_cells[i]);
-                        candies.Enqueue(_cells[i + 1].Candy);
+                        if (_cells[i + j].IsEmpty == false)
+                            candies.Enqueue(_cells[i + j].Candy);
                     }
                 }
             }
