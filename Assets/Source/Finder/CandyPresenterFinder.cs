@@ -1,8 +1,7 @@
 using System.Collections.Generic;
-using Sourse.Presenter;
-using UnityEngine;
+using Source.Presenter;
 
-namespace Sourse.Finder
+namespace Source.Finder
 {
     public class CandyPresenterFinder
     {

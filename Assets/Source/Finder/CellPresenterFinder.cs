@@ -1,35 +1,37 @@
 using System.Collections.Generic;
-using Sourse.Presenter;
-using UnityEngine;
+using Source.Presenter;
 
-public class CellPresenterFinder
+namespace Source.Finder
 {
-    private readonly List<CellPresenter> _cellPresenters = new ();
-
-    public CellPresenterFinder(List<CellPresenter> cellPresenters)
+    public class CellPresenterFinder
     {
-        _cellPresenters = cellPresenters;
-    }
+        private readonly List<CellPresenter> _cellPresenters = new ();
 
-    public CellPresenter Find(int index)
-    {
-        foreach (var presenter in _cellPresenters)
+        public CellPresenterFinder(List<CellPresenter> cellPresenters)
         {
-            if(presenter.Index == index)
-                return presenter;
+            _cellPresenters = cellPresenters;
         }
 
-        return null;
-    }
-
-    public CellPresenter FindByCurrentCandy(int index)
-    {
-        foreach (var presenter in _cellPresenters)
+        public CellPresenter Find(int index)
         {
-            if (presenter.CheckCandyIndex(index))
-                return presenter;
+            foreach (var presenter in _cellPresenters)
+            {
+                if(presenter.Index == index)
+                    return presenter;
+            }
+
+            return null;
         }
 
-        return null;
+        public CellPresenter FindByCurrentCandy(int index)
+        {
+            foreach (var presenter in _cellPresenters)
+            {
+                if (presenter.CheckCandyIndex(index))
+                    return presenter;
+            }
+
+            return null;
+        }
     }
 }

@@ -1,12 +1,12 @@
 using System;
 using System.Collections.Generic;
-using Sourse.Candies;
-using Sourse.GameboardContent;
-using Sourse.GameboardContent.CellContent;
-using Sourse.HUD.Input;
+using Source.Candies;
+using Source.GameboardContent;
+using Source.GameboardContent.CellContent;
+using Source.HUD.Input;
 using UnityEngine;
 
-namespace Sourse.Presenter
+namespace Source.Presenter
 {
     public class GameboardPresenter : IPresenter
     {
@@ -41,9 +41,9 @@ namespace Sourse.Presenter
             _touchpad.TouchEnded -= OnTouchEnded;
         }
 
-        public bool NeedUpdate(out Stack<Cell> cellsToUpdate, out Queue<Candy> candiesToUpdate)
+        public bool NeedUpdate(out Queue<Cell> cellsToUpdate, out Queue<Candy> candiesToUpdate)
         {
-            _gameboard.Update(out Stack<Cell> cells, out Queue<Candy> candies);
+            _gameboard.Update(out Queue<Cell> cells, out Queue<Candy> candies);
 
             if (candies.Count == 0)
             {

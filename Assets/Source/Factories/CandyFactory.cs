@@ -1,7 +1,7 @@
-using Sourse.Candies;
+using Source.Candies;
 using UnityEngine;
 
-namespace Sourse.Factories
+namespace Source.Factories
 {
     public class CandyFactory
     {

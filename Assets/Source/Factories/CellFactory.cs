@@ -1,19 +1,19 @@
 using System.Collections.Generic;
-using Sourse.GameboardContent.CellContent;
+using Source.GameboardContent.CellContent;
 using UnityEngine;
 
-namespace Sourse.Factories
+namespace Source.Factories
 {
     public class CellFactory
     {
-        public List<Cell> Get(int width, int height)
+        public List<Cell> CreateCells(int boardWidth, int boardHeight)
         {
             List<Cell> tempCells = new ();
             int index = 0;
 
-            for (int i = 0; i < width; i++) 
+            for (int i = 0; i < boardWidth; i++) 
             {
-                for (int j = 0; j < height; j++)
+                for (int j = 0; j < boardHeight; j++)
                 {
                     Vector2 currentPosition = new (i, j);
                     Cell cell = new (currentPosition, index);

@@ -1,7 +1,7 @@
-using Sourse.Presenter;
+using Source.Presenter;
 using UnityEngine;
 
-namespace Sourse.GameboardContent.CellContent
+namespace Source.GameboardContent.CellContent
 {
     public class CellView : MonoBehaviour
     {

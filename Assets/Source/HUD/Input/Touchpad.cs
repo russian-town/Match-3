@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace Sourse.HUD.Input
+namespace Source.HUD.Input
 {
     public class Touchpad : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     {

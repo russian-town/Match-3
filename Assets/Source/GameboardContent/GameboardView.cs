@@ -1,7 +1,7 @@
-using Sourse.Presenter;
+using Source.Presenter;
 using UnityEngine;
 
-namespace Sourse.GameboardContent
+namespace Source.GameboardContent
 {
     public class GameboardView : MonoBehaviour
     {

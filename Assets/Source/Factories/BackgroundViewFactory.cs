@@ -1,7 +1,7 @@
-using Sourse.Background;
+using Source.Background;
 using UnityEngine;
 
-namespace Sourse.Factories
+namespace Source.Factories
 {
     public class BackgroundViewFactory
     {

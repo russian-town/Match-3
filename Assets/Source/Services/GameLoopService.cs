@@ -1,11 +1,11 @@
 using System.Collections.Generic;
-using Sourse.Candies;
-using Sourse.Finder;
-using Sourse.GameboardContent.CellContent;
-using Sourse.Presenter;
+using Source.Candies;
+using Source.Finder;
+using Source.GameboardContent.CellContent;
+using Source.Presenter;
 using UnityEngine;
 
-namespace Sourse.Services
+namespace Source.Services
 {
     public class GameLoopService
     {
@@ -98,7 +98,7 @@ namespace Sourse.Services
 
         private void UpdateBoard()
         {
-            if (_gameboardPresenter.NeedUpdate(out Stack<Cell> cellsToUpdate,
+            if (_gameboardPresenter.NeedUpdate(out Queue<Cell> cellsToUpdate,
                 out Queue<Candy> candiesToUpdate))
             {
                 Debug.Log("need update");
@@ -106,7 +106,7 @@ namespace Sourse.Services
                 while (candiesToUpdate.Count > 0)
                 {
                     if (candiesToUpdate.TryDequeue(out Candy candy) == false
-                        || cellsToUpdate.TryPop(out Cell cell) == false)
+                        || cellsToUpdate.TryDequeue(out Cell cell) == false)
                         break;
 
                     _candyPresenterFinder.Find(candy.Index).Swap(cell.WorldPosition);
@@ -117,3 +117,47 @@ namespace Sourse.Services
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

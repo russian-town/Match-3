@@ -1,7 +1,7 @@
-using Sourse.HUD.Input;
+using Source.HUD.Input;
 using UnityEngine;
 
-namespace Sourse.Factories
+namespace Source.Factories
 {
     public class TouchpadFactory
     {

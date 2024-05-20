@@ -1,9 +1,9 @@
 using System.Collections.Generic;
-using Sourse.Configs;
-using Sourse.GameboardContent;
-using Sourse.GameboardContent.CellContent;
+using Source.Configs;
+using Source.GameboardContent;
+using Source.GameboardContent.CellContent;
 
-namespace Sourse.Factories
+namespace Source.Factories
 {
     public class GameboardFactory
     {

@@ -1,8 +1,8 @@
 using UnityEngine;
 
-namespace Sourse.Background
+namespace Source.Background
 {
-    public class BackgroundSizeChanger
+    public class BackgroundSizeProvider
     {
         private readonly float _scaleFactor = 2f;
 

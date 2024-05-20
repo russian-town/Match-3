@@ -1,12 +1,11 @@
 using System;
 using UnityEngine;
 
-namespace Sourse.Candies
+namespace Source.Candies
 {
-    [SerializeField]
     public class Candy
     {
-        public Candy(Vector2 position, int index, CandyType type)
+        public Candy(Vector2Int position, int index, CandyType type)
         {
             Position = position;
             Index = index;
@@ -15,13 +14,13 @@ namespace Sourse.Candies
 
         public event Action<Candy> Destroyed;
 
-        public Vector2 Position { get; private set; }
+        public Vector2Int Position { get; private set; }
 
         public int Index { get; private set; }
 
         public CandyType Type { get; private set; }
 
-        public void ChangePosition(Vector2 position)
+        public void ChangePosition(Vector2Int position)
         {
             Position = position;
         }

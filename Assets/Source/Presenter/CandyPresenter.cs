@@ -1,15 +1,17 @@
 using System.Collections;
-using Sourse.Candies;
-using Sourse.Factories;
+using Source.Candies;
+using Source.Factories;
+using Source.Services;
 using UnityEngine;
 
-namespace Sourse.Presenter
+namespace Source.Presenter
 {
     public class CandyPresenter : IPresenter
     {
         private readonly Candy _candy;
         private readonly CandyView _candyView;
         private readonly float _speed;
+        private readonly ICoroutineRunner _coroutineRunner;
         private readonly MonoBehaviour _context;
         private readonly CandyFactory _factory;
 
@@ -19,13 +21,13 @@ namespace Sourse.Presenter
             Candy candy,
             CandyView candyView,
             float speed,
-            MonoBehaviour context)
+            ICoroutineRunner coroutineRunner)
         {
             _candy = candy;
             _candyView = candyView;
             _speed = speed;
+            _coroutineRunner = coroutineRunner;
             Index = candy.Index;
-            _context = context;
         }
 
         public int Index { get; private set; }
@@ -42,7 +44,7 @@ namespace Sourse.Presenter
             _move = null;
         }
 
-        public Coroutine Swap(Vector2 targetPosition)
+        public void Swap(Vector2 targetPosition)
             => _move = _context.StartCoroutine(StartMove(targetPosition));
 
         public void Remove()

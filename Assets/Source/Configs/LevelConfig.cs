@@ -1,10 +1,10 @@
 using UnityEngine;
 
-namespace Sourse.Configs
+namespace Source.Configs
 {
     [CreateAssetMenu(fileName = "Level Config", menuName = "Level Config/New Level Config", order = 59)]
     public class LevelConfig : ScriptableObject
     {
-        [field: SerializeField] public float CandyMoveSpeed;
+        [field: SerializeField] public float CandyMoveSpeed { get; private set; }
     }
 }

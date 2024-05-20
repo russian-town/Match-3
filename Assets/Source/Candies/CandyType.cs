@@ -1,4 +1,4 @@
-namespace Sourse.Candies
+namespace Source.Candies
 {
     public enum CandyType
     {

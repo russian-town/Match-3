@@ -1,11 +1,10 @@
 using System.Collections.Generic;
-using Sourse.Candies;
-using Sourse.Configs;
-using Sourse.Constants;
-using Sourse.GameboardContent.CellContent;
-using UnityEngine;
+using Source.Candies;
+using Source.Configs;
+using Source.Constants;
+using Source.GameboardContent.CellContent;
 
-namespace Sourse.Finder
+namespace Source.Finder
 {
     public class MatchFinder
     {

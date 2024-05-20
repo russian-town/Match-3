@@ -1,8 +1,7 @@
-using Sourse.Candies;
-using Unity.VisualScripting;
+using Source.Candies;
 using UnityEngine;
 
-namespace Sourse.GameboardContent.CellContent
+namespace Source.GameboardContent.CellContent
 {
     public class Cell
     {

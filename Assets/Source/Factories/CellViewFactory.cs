@@ -1,7 +1,7 @@
-using Sourse.GameboardContent.CellContent;
+using Source.GameboardContent.CellContent;
 using UnityEngine;
 
-namespace Sourse.Factories
+namespace Source.Factories
 {
     public class CellViewFactory
     {

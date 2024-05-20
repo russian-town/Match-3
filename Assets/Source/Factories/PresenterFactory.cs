@@ -1,7 +1,7 @@
-using Sourse.Candies;
-using Sourse.Presenter;
+using Source.Candies;
+using Source.Presenter;
 
-namespace Sourse.Factories
+namespace Source.Factories
 {
     public class PresenterFactory
     {

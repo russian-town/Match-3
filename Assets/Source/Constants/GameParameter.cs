@@ -1,4 +1,4 @@
-namespace Sourse.Constants
+namespace Source.Constants
 {
     public class GameParameter
     {

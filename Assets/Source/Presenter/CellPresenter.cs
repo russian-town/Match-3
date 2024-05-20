@@ -1,8 +1,7 @@
-using Sourse.Candies;
-using Sourse.GameboardContent.CellContent;
-using UnityEngine;
+using Source.Candies;
+using Source.GameboardContent.CellContent;
 
-namespace Sourse.Presenter
+namespace Source.Presenter
 {
     public class CellPresenter : IPresenter
     {

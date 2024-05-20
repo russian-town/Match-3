@@ -1,37 +1,20 @@
 using System.Collections.Generic;
-using Sourse.Background;
-using Sourse.Candies;
-using Sourse.Configs;
-using Sourse.Factories;
-using Sourse.Finder;
-using Sourse.GameboardContent;
-using Sourse.GameboardContent.CellContent;
-using Sourse.HUD.Input;
-using Sourse.Presenter;
-using Sourse.Services;
+using Source.Background;
+using Source.Candies;
+using Source.Configs;
+using Source.Factories;
+using Source.Finder;
+using Source.GameboardContent;
+using Source.GameboardContent.CellContent;
+using Source.HUD.Input;
+using Source.Presenter;
+using Source.Services;
 using UnityEngine;
 
-namespace Sourse.Root
+namespace Source.Root
 {
-    public class CompossitionRoot : MonoBehaviour
+    public class CompositionRoot : MonoBehaviour
     {
-        private readonly BackgroundSizeChanger _backgroundSizeChanger = new ();
-        private readonly BackgroundViewFactory _backgroundViewFactory = new ();
-        private readonly CellFactory _cellFactory = new();
-        private readonly CellViewFactory _cellViewFactory = new ();
-        private readonly GameboardFactory _gameboardFactory = new();
-        private readonly GameboardViewFactory _gameboardViewFactory = new ();
-        private readonly CandyFactory _candyFactory = new();
-        private readonly CandyViewFactory _candyViewFactory = new ();
-        private readonly PresenterFactory _presenterFactory = new ();
-        private readonly TouchpadFactory _touchpadFactory = new();    
-        private readonly float _divider = 2f;
-        private readonly float _cellHalfSize = .5f;
-        private readonly List<CellView> _cellViews = new ();
-        private readonly List<CandyPresenter> _candyPresenters = new ();
-        private readonly List<CellPresenter> _cellPresenters = new ();
-        private readonly List<CandyView> _candyViews = new ();
-
         [SerializeField] private BackgroundView _backgroundViewTemplate;
         [SerializeField] private GameboardView _gameboardViewTemplate;
         [SerializeField] private CellView _cellViewTemplate;
@@ -40,10 +23,26 @@ namespace Sourse.Root
         [SerializeField] private CandyView _candyViewTemplate;
         [SerializeField] private RectTransform _hud;
         [SerializeField] private Touchpad _touchpadTemplate;
-        [SerializeField] private List<CandyConfig> _candyConfigs = new ();
+        [SerializeField] private List<CandyConfig> _candyConfigs = new();
         [SerializeField] private LevelConfig _levelConfig;
 
-        private List<Cell> _cells = new ();
+        private readonly BackgroundSizeProvider _backgroundSizeProvider = new();
+        private readonly CellFactory _cellFactory = new();
+        private readonly CellViewFactory _cellViewFactory = new();
+        private readonly GameboardFactory _gameboardFactory = new();
+        private readonly GameboardViewFactory _gameboardViewFactory = new();
+        private readonly CandyFactory _candyFactory = new();
+        private readonly CandyViewFactory _candyViewFactory = new();
+        private readonly PresenterFactory _presenterFactory = new();
+        private readonly TouchpadFactory _touchpadFactory = new();
+        private readonly float _divider = 2f;
+        private readonly float _cellHalfSize = .5f;
+        private readonly List<CellView> _cellViews = new();
+        private readonly List<CandyPresenter> _candyPresenters = new();
+        private readonly List<CellPresenter> _cellPresenters = new();
+        private readonly List<CandyView> _candyViews = new();
+
+        private List<Cell> _cells = new();
         private Touchpad _touchpad;
         private Gameboard _gameboard;
         private GameboardView _gameboardView;
@@ -68,11 +67,14 @@ namespace Sourse.Root
 
         private void Initialize()
         {
-            Vector2 backgroundSize = _backgroundSizeChanger.GetSize(_camera);
-            BackgroundView backgroundView = _backgroundViewFactory.Get(_backgroundViewTemplate);
+            BackgroundView backgroundView = Instantiate(_backgroundViewTemplate);
+
+            Vector2 backgroundSize = _backgroundSizeProvider.GetSize(_camera);
             backgroundView.Construct(backgroundSize);
-            _gameboardView = _gameboardViewFactory.Get(_gameboardViewTemplate);
-            _cells = _cellFactory.Get(_gameboardConfig.Width, _gameboardConfig.Height);
+
+            _gameboardView = Instantiate(_gameboardViewTemplate);
+            
+            _cells = _cellFactory.CreateCells(_gameboardConfig.Width, _gameboardConfig.Height);
 
             for (int i = 0; i < _cells.Count; i++)
             {
@@ -83,16 +85,16 @@ namespace Sourse.Root
             _gameboard = _gameboardFactory.Get(_cells, _gameboardConfig);
             float xPosition = -_gameboardConfig.Width / _divider + _cellHalfSize;
             float yPosition = -_gameboardConfig.Height / _divider + _cellHalfSize;
-            Vector2 gameboardViewPosition = new (xPosition, yPosition);
+            Vector2 gameboardViewPosition = new(xPosition, yPosition);
             _touchpad = _touchpadFactory.Get(_touchpadTemplate, _hud);
             _touchpad.Construct(_camera);
-            GameboardPresenter gameboardPresenter = new (_gameboard, _gameboardView, _touchpad);
+            GameboardPresenter gameboardPresenter = new(_gameboard, _gameboardView, _touchpad);
             _gameboardView.Construct(gameboardViewPosition, gameboardPresenter);
             _gameboardView.Enable();
-            _matchFinder = new (_cells, _gameboardConfig);
-            _candyPresenterFinder = new (_candyPresenters);
-            _cellPresenterFinder = new (_cellPresenters);
-            _gameLoopService = new (gameboardPresenter, _candyPresenterFinder, _cellPresenterFinder, _matchFinder);
+            _matchFinder = new(_cells, _gameboardConfig);
+            _candyPresenterFinder = new(_candyPresenters);
+            _cellPresenterFinder = new(_cellPresenters);
+            _gameLoopService = new(gameboardPresenter, _candyPresenterFinder, _cellPresenterFinder, _matchFinder);
             _gameLoopService.Subscribe();
         }
 
@@ -100,7 +102,7 @@ namespace Sourse.Root
         {
             CellView cellView = _cellViewFactory.Get(_cellViewTemplate);
             _cellViews.Add(cellView);
-            CellPresenter cellPresenter = new (cell, cellView);
+            CellPresenter cellPresenter = new(cell, cellView);
             cellView.Constuct(cellPresenter, cell.WorldPosition, _gameboardView.transform);
             _cellPresenters.Add(cellPresenter);
         }
@@ -114,7 +116,7 @@ namespace Sourse.Root
                 _candyConfigs[randomConfigIndex].Type);
             CandyView candyView = _candyViewFactory.Get(_candyViewTemplate);
             CandyPresenter candyPresenter =
-                new (candy, candyView, _levelConfig.CandyMoveSpeed, this);
+                new(candy, candyView, _levelConfig.CandyMoveSpeed, this);
             candyView.Construct(
                 cell.WorldPosition,
                 _gameboardView.transform,

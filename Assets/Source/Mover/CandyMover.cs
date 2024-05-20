@@ -1,8 +1,7 @@
-using System.Collections;
-using Sourse.Candies;
+using Source.Candies;
 using UnityEngine;
 
-namespace Sourse.Mover
+namespace Source.Mover
 {
     public class CandyMover
     {

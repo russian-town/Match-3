@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Sourse.Background
+namespace Source.Background
 {
     public class BackgroundView : MonoBehaviour
     {

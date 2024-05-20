@@ -1,11 +1,11 @@
-using Sourse.GameboardContent;
+using Source.GameboardContent;
 using UnityEngine;
 
-namespace Sourse.Factories
+namespace Source.Factories
 {
     public class GameboardViewFactory
     {
-        public GameboardView Get(GameboardView gameboardViewTemplate)
+        public GameboardView Create(GameboardView gameboardViewTemplate)
         {
             return Object.Instantiate(gameboardViewTemplate);
         }
