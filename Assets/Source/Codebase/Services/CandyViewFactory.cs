@@ -1,5 +1,4 @@
 using System;
-using JetBrains.Annotations;
 using Source.Codebase.Controllers.Presenters;
 using Source.Codebase.Domain;
 using Source.Codebase.Domain.Configs;
@@ -41,12 +40,10 @@ namespace Source.Codebase.Services
                 CandyView viewTemplate = _staticDataService.GetViewTemplate<CandyView>();
                 candyView = Object.Instantiate(viewTemplate, _candySpawnPoint.position, Quaternion.identity);
                 candyView.SetPool(_candyViewPool);
-                candyView.name = $"{nameof(CandyView)} {candy.BoardPosition}";
             }
             else
             {
                 candyView.transform.SetPositionAndRotation(_candySpawnPoint.position, _candySpawnPoint.rotation);
-                candyView.name = $"{nameof(CandyView)} {candy.BoardPosition}";
             }
 
             CandyPresenter candyPresenter = new(candyView, candy, _positionConverter);

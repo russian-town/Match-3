@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Source.Codebase.Domain;
+using Source.Codebase.Domain.Constants;
 using Source.Codebase.Domain.Models;
 using Source.Codebase.Services.Abstract;
 using UnityEngine;
@@ -13,11 +14,15 @@ namespace Source.Codebase.Services
         private readonly GameBoard _gameBoard;
         private readonly ICandyService _candyService;
         private readonly ICoroutineRunner _coroutineRunner;
-
+        private readonly WaitForSeconds _waitBeforeDestroy;
+        private readonly WaitForSeconds _waitBeforeDrop;
+        private readonly WaitForSeconds _waitBeforeFill;
+        
         private Cell _selectedCell;
         private bool _inProgress;
 
         private Coroutine _boardUpdateRoutine;
+
 
         public GameLoopService(
             GameBoard gameBoard,
@@ -27,6 +32,10 @@ namespace Source.Codebase.Services
             _gameBoard = gameBoard;
             _candyService = candyService;
             _coroutineRunner = coroutineRunner;
+            
+            _waitBeforeDestroy = new WaitForSeconds(GameConstants.BeforeDestroyDelay);
+            _waitBeforeDrop = new WaitForSeconds(GameConstants.BeforeDropDelay);
+            _waitBeforeFill = new WaitForSeconds(GameConstants.BeforeFillDelay);
         }
 
         public void HandleCellTouch(Cell startCell, Cell endCell)
@@ -48,18 +57,20 @@ namespace Source.Codebase.Services
             {
                 if (CheckForMatches())
                 {
-                    yield return new WaitForSeconds(0.3f);
+
+                    yield return _waitBeforeDestroy;
 
                     DestroyMatches();
                 }
 
                 if (CheckForDrop())
                 {
-                    yield return new WaitForSeconds(0.3f);
+
+                    yield return _waitBeforeDrop;
 
                     DropCandies();
 
-                    yield return new WaitForSeconds(0.3f);
+                    yield return _waitBeforeFill;
 
                     _candyService.FillEmptyCells(_gameBoard);
                 }

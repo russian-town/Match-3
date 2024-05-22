@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Source.Codebase.Presentation.Abstract
 {
-    public class ViewBase : MonoBehaviour, IViewBase
+    public abstract class ViewBase : MonoBehaviour, IViewBase
     {
         private IPresenter _presenter;
 

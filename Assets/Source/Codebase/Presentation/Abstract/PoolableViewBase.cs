@@ -1,10 +1,11 @@
 using System;
 using Source.Codebase.Controllers.Presenters;
+using Source.Codebase.Infrastructure.Pools;
 using UnityEngine;
 
-namespace Source.Codebase.Infrastructure.Pools
+namespace Source.Codebase.Presentation.Abstract
 {
-    public class PoolableViewBase : MonoBehaviour, IPoolable
+    public abstract class PoolableViewBase : MonoBehaviour, IPoolable
     {
         private IPresenter _presenter;
         private IPool _pool;
@@ -23,8 +24,6 @@ namespace Source.Codebase.Infrastructure.Pools
         {
             if (_pool != null)
             {
-                gameObject.SetActive(false);
-
                 BackToPool();
 
                 return;
@@ -51,6 +50,7 @@ namespace Source.Codebase.Infrastructure.Pools
             if (_pool == null)
                 throw new Exception("You trying to release poolable, but poolable without pool!");
 
+            gameObject.SetActive(false);
             _pool.Release(this);
         }
     }

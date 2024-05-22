@@ -2,15 +2,20 @@
 
 namespace Source.Codebase.Infrastructure.Pools
 {
-    public class Pool: IPool
+    public class Pool : IPool
     {
-        private List<object> _poolables = new();
+        private readonly Queue<object> _poolables = new();
 
-        public IPoolable Get() =>
-            _poolables.Count == 0 ? null : _poolables[0] as IPoolable;
+        public IPoolable Get()
+        {
+            if (_poolables.Count == 0)
+                return null;
+
+            return _poolables.Dequeue() as IPoolable;
+        }
 
         public void Release(IPoolable poolable) =>
-            _poolables.Add(poolable);
+            _poolables.Enqueue(poolable);
 
         public void Clear() =>
             _poolables.Clear();

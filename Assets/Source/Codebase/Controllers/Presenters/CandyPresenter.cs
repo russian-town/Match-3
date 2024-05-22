@@ -1,10 +1,11 @@
 using System;
+using System.Threading;
 using System.Threading.Tasks;
 using DG.Tweening;
 using Source.Codebase.Domain;
+using Source.Codebase.Domain.Constants;
 using Source.Codebase.Domain.Models;
 using Source.Codebase.Presentation;
-using Source.Codebase.Services;
 using Source.Codebase.Services.Abstract;
 using UnityEngine;
 
@@ -16,18 +17,24 @@ namespace Source.Codebase.Controllers.Presenters
         private readonly Candy _candy;
         private readonly IPositionConverter _positionConverter;
         private readonly ICoroutineRunner _coroutineRunner;
-
         private readonly ICandyService _candyService;
+        private readonly float _moveDuration;
+
+        private CancellationTokenSource _cancellationTokenSource;
 
         public CandyPresenter(CandyView view, Candy candy, IPositionConverter positionConverter)
         {
             _view = view;
             _candy = candy;
             _positionConverter = positionConverter;
+
+            _moveDuration = GameConstants.CandyMoveDuration;
         }
 
         public void Enable()
         {
+            _cancellationTokenSource = new();
+
             _candy.PositionChanged += SetViewPosition;
             _candy.Destroyed += OnCandyDestroyed;
 
@@ -36,6 +43,9 @@ namespace Source.Codebase.Controllers.Presenters
 
         public void Disable()
         {
+            _cancellationTokenSource?.Cancel();
+            _cancellationTokenSource?.Dispose();
+
             _candy.PositionChanged -= SetViewPosition;
             _candy.Destroyed -= OnCandyDestroyed;
 
@@ -46,16 +56,20 @@ namespace Source.Codebase.Controllers.Presenters
         private async void SetViewPosition()
         {
             Vector3 newPosition = _positionConverter.GetWorldFromBoardPosition(_candy.BoardPosition);
-            _view.transform.DOMove(newPosition, 0.3f);
-            await Task.Delay(TimeSpan.FromSeconds(0.3f));
+            _view.transform.DOMove(newPosition, _moveDuration);
+            await Task.Delay(TimeSpan.FromSeconds(_moveDuration));
         }
 
         private async void OnCandyDestroyed(Candy candy)
         {
-            _view.transform.DOScale(Vector3.zero, 0.3f).SetEase(Ease.OutSine);
-            await Task.Delay(TimeSpan.FromSeconds(0.3f));
-            
-            _view.Destroy();
+            try
+            {
+                await _view.PlayExplosion(_cancellationTokenSource.Token);
+                _view.Destroy();
+            }
+            catch (TaskCanceledException exception)
+            {
+            }
         }
     }
 }
