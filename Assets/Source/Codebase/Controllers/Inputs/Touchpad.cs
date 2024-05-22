@@ -22,6 +22,9 @@ namespace Source.Codebase.Controllers.Inputs
 
         private void Update()
         {
+            if (_camera == null)
+                return;
+
             if (Input.GetMouseButtonDown(0))
             {
                 _startTouchPosition = _camera.ScreenToWorldPoint(Input.mousePosition);

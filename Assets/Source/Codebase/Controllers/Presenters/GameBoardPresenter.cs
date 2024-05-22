@@ -49,7 +49,6 @@ namespace Source.Codebase.Controllers.Presenters
         {
             _cellViewFactory.CreateForBoard(_gameBoard, _gameBoardView.CellContainer);
 
-            _candyService.InitialFillBoard(_gameBoard);
 
             _touchpad.TouchStarted += OnTouchStarted;
             _touchpad.TouchEnded += OnTouchEnded;

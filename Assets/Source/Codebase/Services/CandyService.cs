@@ -1,3 +1,5 @@
+using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using Source.Codebase.Domain;
 using Source.Codebase.Domain.Models;
@@ -11,31 +13,46 @@ namespace Source.Codebase.Services
     {
         private readonly ICandyViewFactory _candyViewFactory;
         private readonly IStaticDataService _staticDataService;
+        private readonly BoardMatcher _boardMatcher;
 
-        public CandyService(ICandyViewFactory candyViewFactory, IStaticDataService staticDataService)
+        public CandyService(
+            ICandyViewFactory candyViewFactory,
+            IStaticDataService staticDataService,
+            BoardMatcher boardMatcher)
         {
             _candyViewFactory = candyViewFactory;
             _staticDataService = staticDataService;
+            _boardMatcher = boardMatcher;
         }
 
-        public void InitialFillBoard(GameBoard gameBoard)
+        public IEnumerator InitialFillBoard(GameBoard gameBoard)
         {
             CandyType[] availableTypes = _staticDataService.CandyConfigs.Select(config => config.Type).ToArray();
 
-            for (int y = 0; y < gameBoard.Height; y++)
+            List<Candy> candies = new List<Candy>();
+
+            do
             {
-                for (int x = 0; x < gameBoard.Width; x++)
+                yield return null;
+
+                candies.Clear();
+
+                for (int y = 0; y < gameBoard.Height; y++)
                 {
-                    Vector2Int boardPosition = new(x, y);
-                    CandyType candyType = GetRandomCandyType(availableTypes);
-
-                    Candy candy = new(candyType, boardPosition);
-
-                    _candyViewFactory.Create(candy);
-
-                    gameBoard.SetCandy(candy, boardPosition);
+                    for (int x = 0; x < gameBoard.Width; x++)
+                    {
+                        Vector2Int boardPosition = new(x, y);
+                        CandyType candyType = GetRandomCandyType(availableTypes);
+                        Candy candy = new(candyType, boardPosition);
+                        candies.Add(candy);
+                        gameBoard.SetCandy(candy, candy.BoardPosition);
+                    }
                 }
             }
+            while (_boardMatcher.CheckForMatches());
+
+            foreach (Candy candy in candies)
+                _candyViewFactory.Create(candy);
         }
 
         public void FillEmptyCells(GameBoard gameBoard)
