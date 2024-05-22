@@ -40,6 +40,7 @@ namespace Source.Codebase.Controllers.Presenters
             _candy.Destroyed -= OnCandyDestroyed;
 
             _view.transform.DOKill();
+            _view.transform.localScale = Vector3.one;
         }
 
         private async void SetViewPosition()
@@ -47,7 +48,6 @@ namespace Source.Codebase.Controllers.Presenters
             Vector3 newPosition = _positionConverter.GetWorldFromBoardPosition(_candy.BoardPosition);
             _view.transform.DOMove(newPosition, 0.3f);
             await Task.Delay(TimeSpan.FromSeconds(0.3f));
-
         }
 
         private async void OnCandyDestroyed(Candy candy)

@@ -1,9 +1,9 @@
-using Source.Codebase.Presentation.Abstract;
+using Source.Codebase.Infrastructure.Pools;
 using UnityEngine;
 
 namespace Source.Codebase.Presentation
 {
-    public class CandyView : ViewBase
+    public class CandyView : PoolableViewBase
     {
         [SerializeField] private SpriteRenderer _spriteRenderer;
 
